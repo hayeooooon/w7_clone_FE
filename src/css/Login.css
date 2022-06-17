@@ -8,8 +8,8 @@
 }
 
 .regi_mid > h5 {
-  /* margin-left: 30px; */
-  margin: 20px 0px 0px 30px;
+  margin: 20px 0px 0px 40px;
+  font-weight: 550;
   text-align: left;
 }
 .regi_mid > input {
