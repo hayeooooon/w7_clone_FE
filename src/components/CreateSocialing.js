@@ -1,7 +1,7 @@
 import React from "react";
 import "../css/Login.css";
 import { useNavigate } from "react-router-dom";
-const Register = () => {
+const CreateSocialing = () => {
   const nagivate = useNavigate();
 
   const onClickNext = () => {
@@ -27,4 +27,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default CreateSocialing;
