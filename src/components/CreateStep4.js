@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import ic_image from '../images/ic_image.png'
 
-const RegisterStep4 = () => {
+const CreateStep4 = () => {
   const navigate = useNavigate()
 
   
@@ -86,4 +86,4 @@ const Button = styled.button`
     color: #989696;
   }
 `
-export default RegisterStep4;
+export default CreateStep4;

@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import ic_image from '../images/ic_image.png'
 
-const RegisterStep3 = () => {
+const CreateStep3 = () => {
   const navigate = useNavigate()
 	const fileInput = useRef();
 	const nextButton = useRef();
@@ -112,4 +112,4 @@ const Button = styled.button`
     color: #989696;
   }
 `
-export default RegisterStep3;
+export default CreateStep3;
