@@ -1,0 +1,31 @@
+.inter_mid > h2 {
+  display: flex;
+  font-weight: 550;
+  margin: 0px 0px 20px 15px;
+  letter-spacing: -1.5px;
+}
+.inter_mid > h4 {
+  display: flex;
+  color: rgb(152, 153, 153);
+  font-weight: 400;
+  margin: 5px 0px 0px 15px;
+  letter-spacing: -0.5px;
+}
+
+.inter_mid_ex {
+  text-align: left;
+}
+
+.inter_mid_ex > button {
+  background-color: #ffffff;
+  border: 1px solid rgb(161, 161, 161);
+  color: rgb(0, 0, 0);
+  font-size: 20px;
+  cursor: pointer;
+  width: 30%;
+  height: 55px;
+  margin: 20px 0px 12px 12px;
+  padding: 15px;
+  border-radius: 50px;
+  font-size: 14px;
+}
