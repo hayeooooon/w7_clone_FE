@@ -1,0 +1,34 @@
+.regiPro_mid > h2 {
+  display: flex;
+  font-weight: 550;
+  margin: 0px 0px 20px 15px;
+  letter-spacing: -1.5px;
+}
+.regiPro_mid > h4 {
+  display: flex;
+  color: rgb(152, 153, 153);
+  font-weight: 400;
+  margin: 5px 0px 0px 15px;
+  letter-spacing: -0.5px;
+}
+
+.regiPro_mid_ex {
+  text-align: left;
+}
+
+.regiPro_mid_ex > h3 {
+  display: flex;
+  color: rgb(0, 0, 0);
+  font-weight: 500;
+  margin: 5px 0px 15px 15px;
+  letter-spacing: -0.5px;
+}
+
+.regiPro_photo > input {
+  margin: 120px 0px 120px 0px;
+}
+
+.regiPro_mid_ex > ul > li {
+  color: rgb(163, 163, 163);
+  font-weight: 400;
+}
