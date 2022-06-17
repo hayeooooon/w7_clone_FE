@@ -1,0 +1,59 @@
+.regi_main > h1 {
+  color: #fc4700;
+  font-family: sans-serif;
+  font-weight: 400;
+  text-align: left;
+  margin-left: 20px;
+  margin-bottom: 40px;
+}
+
+.regi_mid > h5 {
+  /* margin-left: 30px; */
+  margin: 20px 0px 0px 30px;
+  text-align: left;
+}
+.regi_mid > input {
+  margin-bottom: 10px;
+  width: 90%;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  box-sizing: border-box;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.regi_btn > button {
+  background-color: #fc4700;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  width: 90%;
+  height: 55px;
+  margin-bottom: 12px;
+  margin-top: 10px;
+  padding: 15px;
+  border: transparent;
+  border-radius: 50px;
+  outline: none;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.regi_bottom {
+  font-size: small;
+  color: rgb(187, 186, 186);
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  width: 95%;
+}
+
+.regi_bottom > a {
+  cursor: pointer;
+}
+.regi_bottom > u {
+  margin-left: 20px;
+}
