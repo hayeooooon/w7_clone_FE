@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-const RegisterStep2 = () => {
+const CreateStep2 = () => {
   const navigate = useNavigate();
 	const [inputValue, setInputValue] = useState("");
 	const nextButton = useRef();
@@ -75,4 +75,4 @@ const Button = styled.button`
 		color: #989696;
 	}
 `;
-export default RegisterStep2;
+export default CreateStep2;

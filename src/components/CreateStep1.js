@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-const RegisterStep1 = () => {
+const CreateStep1 = () => {
   const navigate = useNavigate()
   const nextButton = useRef();
 	const [checkedCategory, setCheckedCategory] = useState(null);
@@ -137,4 +137,4 @@ const Button = styled.button`
     color: #989696;
   }
 `
-export default RegisterStep1;
+export default CreateStep1;
