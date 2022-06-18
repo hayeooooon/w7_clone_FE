@@ -1,8 +1,8 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-const CreateStep1 = () => {
+const CreateStep1 = ({setStep}) => {
   const navigate = useNavigate()
   const nextButton = useRef();
 	const [checkedCategory, setCheckedCategory] = useState(null);
@@ -16,6 +16,9 @@ const CreateStep1 = () => {
 		"#DDA65B",
 		"#A3A7AA",
 	];
+	useEffect(()=>{
+		setStep(1);
+	},[]);
   
 	return (
 		<>
@@ -65,7 +68,10 @@ const CreateStep1 = () => {
 						"linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.5) 100%)",
 				}}
 			>
-				<Button type="button" disabled={checkedCategory !== null ? false : true} ref={nextButton} onClick={()=>navigate('/register/step_2')}>다음</Button>
+				<Button type="button" disabled={checkedCategory !== null ? false : true} ref={nextButton} onClick={()=>{
+					navigate('/create/step_2');
+					setStep(2);
+				}}>다음</Button>
 			</div>
 		</>
 	);

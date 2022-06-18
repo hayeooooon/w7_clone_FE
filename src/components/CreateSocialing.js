@@ -1,3 +1,4 @@
+import "../css/common.css";
 import React, {useEffect, useState} from "react";
 import { Navigate, useNavigate, useParams, useLocation } from "react-router-dom";
 import styled from "styled-components";
@@ -9,7 +10,7 @@ const Register = ({step, setStep}) => {
 	return (
 		<>
 			<header style={{position: 'relative'}}>
-        <div style={{height: '4px', backgroundColor: '#F4F4F4'}}><span style={{width: `${(step/8)*100}%`, height: '100%', display: 'block', backgroundColor: '#E1483C'}}></span></div>
+        <div style={{height: '4px', backgroundColor: '#F4F4F4'}}><span style={{width: `${(step/8)*100}%`, height: '100%', display: 'block', backgroundColor: '#E1483C', transition: 'ease .4s'}}></span></div>
 				<ButtonGoBack type="button" onClick={() => {navigate(-1)}}></ButtonGoBack>
 			</header>
 			<div

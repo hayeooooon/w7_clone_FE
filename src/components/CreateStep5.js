@@ -2,34 +2,22 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import ic_image from '../images/ic_image.png'
-
-const CreateStep4 = ({setStep}) => {
+const CreateStep5 = ({setStep}) => {
   const navigate = useNavigate()
 	useEffect(()=>{
-		setStep(4);
+		setStep(5);
 	},[]);
   
 	return (
 		<>
 			<h3 className="section_title" style={{ padding: "20px 0 28px" }}>
-				언제 만날까요?
+				어디서 만날까요?
 			</h3>
 			<div className="input_area">
-        <label>
-        <input type="date"/>
-        <p className="label"></p>
-        <div>
-          <div>
-            
-          </div>
-        </div>
-        </label>
-			</div>
-			<div className="input_area">
-        <label>
-        <input type="time"/>
-        </label>
+        <ul style={{margin: '0 -4px'}}>
+        <li></li>
+        <li></li>
+        </ul>
 			</div>
 			<div
 				style={{
@@ -44,7 +32,7 @@ const CreateStep4 = ({setStep}) => {
 			>
 				<Button type="button" disabled="" onClick={()=>{
 					navigate('/create/step_5');
-					setStep(5);
+					setStep(6);
 				}}>다음</Button>
 			</div>
 		</>
@@ -91,4 +79,4 @@ const Button = styled.button`
     color: #989696;
   }
 `
-export default CreateStep4;
+export default CreateStep5;
