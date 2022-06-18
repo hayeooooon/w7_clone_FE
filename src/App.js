@@ -1,5 +1,5 @@
 import "./App.css";
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 
 import Main from "./components/Main";
@@ -14,22 +14,22 @@ import CreateStep3 from "./components/CreateStep3";
 import CreateStep4 from "./components/CreateStep4";
 
 function App() {
-
 	const location = useLocation();
   const [step, setStep] = useState(1);
 
   return (
     <div
-			className="App"
-			style={{
-				width: "100%",
-				maxWidth: "500px",
-				minHeight: "100vh",
-				margin: "0 auto",
-				border: "1px solid #ddd",
-				overflowX: "hidden",
-			}}
-		>{/* 최대 가로 사이즈 500 고정, 가운데 정렬하는 style */}
+      className="App"
+      style={{
+        width: "100%",
+        maxWidth: "500px",
+        minHeight: "100vh",
+        margin: "0 auto",
+        border: "1px solid #ddd",
+        overflowX: "hidden",
+      }}
+    >
+      {/* 최대 가로 사이즈 500 고정, 가운데 정렬하는 style */}
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/login" element={<Login />} />
@@ -44,7 +44,7 @@ function App() {
 				</Route>
       </Routes>
     </div>
-	)
+  );
 }
 
 export default App;
