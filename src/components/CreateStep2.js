@@ -1,11 +1,15 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-const CreateStep2 = () => {
+const CreateStep2 = ({setStep}) => {
   const navigate = useNavigate();
 	const [inputValue, setInputValue] = useState("");
 	const nextButton = useRef();
+
+	useEffect(()=>{
+		setStep(2);
+	},[]);
 
 	return (
 		<>
@@ -50,7 +54,10 @@ const CreateStep2 = () => {
 					type="button"
 					disabled={inputValue.trim().length >= 5 ? false : true}
 					ref={nextButton}
-					onClick={() => navigate("/register/step_3")}
+					onClick={() => {
+						navigate("/create/step_3");
+						setStep(3);
+					}}
 				>
 					다음
 				</Button>

@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import ic_image from '../images/ic_image.png'
 
-const CreateStep3 = () => {
+const CreateStep3 = ({setStep}) => {
   const navigate = useNavigate()
 	const fileInput = useRef();
 	const nextButton = useRef();
@@ -17,6 +17,9 @@ const CreateStep3 = () => {
 			setActivateNextButton(true);
 		}
 	}, [file])
+	useEffect(()=>{
+		setStep(3);
+	},[]);
 
 	// const formData = new FormData();
 	// formData.append("img", file);
@@ -66,7 +69,10 @@ const CreateStep3 = () => {
 						"linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.5) 100%)",
 				}}
 			>
-				<Button type="button" disabled={activateNextButton ? false : true} ref={nextButton} onClick={()=>navigate('/register/step_4')}>다음</Button>
+				<Button type="button" disabled={activateNextButton ? false : true} ref={nextButton} onClick={()=>{
+					navigate('/create/step_4');
+					setStep(4);
+				}}>다음</Button>
 			</div>
 		</>
 	);

@@ -14,8 +14,8 @@ import CreateStep3 from "./components/CreateStep3";
 import CreateStep4 from "./components/CreateStep4";
 
 function App() {
-  const location = useLocation();
-  const [step, setStep] = useState();
+	const location = useLocation();
+  const [step, setStep] = useState(1);
 
   return (
     <div
@@ -36,12 +36,12 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/regiProfile" element={<RegiProfile />} />
         <Route path="/interest" element={<Interest />} />
-        <Route path="/CreateSocialing" element={<CreateSocialing />}>
-          <Route path="step_1" element={<CreateStep1 />}></Route>
-          <Route path="step_2" element={<CreateStep2 />}></Route>
-          <Route path="step_3" element={<CreateStep3 />}></Route>
-          <Route path="step_4" element={<CreateStep4 />}></Route>
-        </Route>
+				<Route path="/create" element={<CreateSocialing step={step}/>}>
+          <Route path="step_1" element={<CreateStep1 setStep={setStep}/>}></Route>
+          <Route path="step_2" element={<CreateStep2 setStep={setStep}/>}></Route>
+          <Route path="step_3" element={<CreateStep3 setStep={setStep}/>}></Route>
+          <Route path="step_4" element={<CreateStep4 setStep={setStep}/>}></Route>
+				</Route>
       </Routes>
     </div>
   );
