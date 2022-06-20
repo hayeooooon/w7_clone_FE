@@ -1,8 +1,8 @@
 import "../css/common.css";
 import React, {useEffect, useState} from "react";
-import { Navigate, useNavigate, useParams, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { Routes, Route, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 
 const Register = ({step, setStep}) => {

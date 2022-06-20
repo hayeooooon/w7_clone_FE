@@ -102,7 +102,7 @@ const CagegoryGroup = styled.ul`
 		}
 		.text_box {
 			p {
-				font-size: 14px;
+				font-size: 15px;
 				line-height: 1.2;
 				label {
 					display: inline-block;
@@ -120,7 +120,7 @@ const CagegoryGroup = styled.ul`
 			}
 			span {
 				display: block;
-				font-size: 12px;
+				font-size: 13px;
 				color: #989696;
 				margin-top: 4px;
 			}
@@ -130,8 +130,8 @@ const CagegoryGroup = styled.ul`
 const Button = styled.button`
   display: block;
   width: 100%;
-  height: 40px;
-  line-height: 40px;
+	height: 46px;
+	line-height: 46px;
   border-radius: 20px;
   background-color: #E1483C;
   color: #fff;
