@@ -1,15 +1,18 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import TimePicker from 'rc-time-picker';
+import 'rc-time-picker/assets/index.css';
 
 import ic_image from '../images/ic_image.png'
 
-const CreateStep4 = ({setStep}) => {
+const CreateStep4 = ({setStep, setData}) => {
   const navigate = useNavigate()
 	useEffect(()=>{
 		setStep(4);
 	},[]);
-  
+	const [time, setTime] = useState('');
+
 	return (
 		<>
 			<h3 className="section_title" style={{ padding: "20px 0 28px" }}>
@@ -27,6 +30,17 @@ const CreateStep4 = ({setStep}) => {
         </label>
 			</div>
 			<div className="input_area">
+			<p>Selected Time: {time || '-'}</p>
+      <TimePicker
+        placeholder="Select Time"
+        use12Hours
+        showSecond={false}
+        focusOnOpen={true}
+        format="hh:mm A"
+        onChange={e => setTime(e.format('LT'))}
+      />
+
+			
         <label>
         <input type="time" onChange={(e)=>{console.log(e.target.value, typeof(e.target.value))}}/>
         </label>

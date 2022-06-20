@@ -25,7 +25,12 @@ function App() {
 	const [step, setStep] = useState(1);
 	const [address, setAddress] = useState("");
 	const [popupIsVisible, setPopupIsVisible] = useState(false);
-
+	const [data, setData] = useState({
+		id: '',
+		password: '',
+		nickname: '',
+	});
+	console.log(data);
 
 	return (
 		<div
@@ -49,19 +54,19 @@ function App() {
 				<Route path="/create" element={<CreateSocialing step={step} />}>
 					<Route
 						path="step_1"
-						element={<CreateStep1 setStep={setStep} />}
+						element={<CreateStep1 setStep={setStep} setData={setData} />}
 					></Route>
 					<Route
 						path="step_2"
-						element={<CreateStep2 setStep={setStep} />}
+						element={<CreateStep2 setStep={setStep} setData={setData} />}
 					></Route>
 					<Route
 						path="step_3"
-						element={<CreateStep3 setStep={setStep} />}
+						element={<CreateStep3 setStep={setStep} setData={setData} />}
 					></Route>
 					<Route
 						path="step_4"
-						element={<CreateStep4 setStep={setStep} />}
+						element={<CreateStep4 setStep={setStep} setData={setData} />}
 					></Route>
 					<Route
 						path="step_5"
@@ -72,20 +77,21 @@ function App() {
 								setAddress={setAddress}
 								popupIsVisible={popupIsVisible}
 								setPopupIsVisible={setPopupIsVisible}
+								setData={setData}
 							/>
 						}
 					></Route>
           	<Route
 						path="step_6"
-						element={<CreateStep6 setStep={setStep} />}
+						element={<CreateStep6 setStep={setStep} setData={setData} />}
 					></Route>
           <Route
 						path="step_7"
-						element={<CreateStep7 setStep={setStep} />}
+						element={<CreateStep7 setStep={setStep} setData={setData} />}
 					></Route>
           <Route
 						path="step_8"
-						element={<CreateStep8 setStep={setStep} />}
+						element={<CreateStep8 setStep={setStep} setData={setData}/>}
 					></Route>
 				</Route>
 			</Routes>

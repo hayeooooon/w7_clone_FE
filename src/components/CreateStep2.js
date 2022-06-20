@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import TextInput from './TextInput';
 
-const CreateStep2 = ({setStep}) => {
+const CreateStep2 = ({setStep, setData}) => {
   const navigate = useNavigate();
 	const [textValue, setTextValue] = useState("");
 	const nextButton = useRef();

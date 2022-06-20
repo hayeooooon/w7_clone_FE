@@ -17,7 +17,7 @@ const Main = () => {
 					</H1>
 				</div>
 			</header>
-			<div className="container" style={{minHeight: '100vh'}}>
+			<div className="container" style={{minHeight: '100vh',backgroundColor: '#F4F4F4'}}>
 				<MainCategory></MainCategory>
 				<MainSlider></MainSlider>
         <SocialingList stlyle={{backgroundColor: '#F4F4F4'}}></SocialingList>

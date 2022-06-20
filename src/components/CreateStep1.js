@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-const CreateStep1 = ({setStep}) => {
+const CreateStep1 = ({setStep, setData}) => {
   const navigate = useNavigate()
   const nextButton = useRef();
 	const [checkedCategory, setCheckedCategory] = useState(null);

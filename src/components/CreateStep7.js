@@ -2,12 +2,16 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-const CreateStep7 = ({ setStep }) => {
+const CreateStep7 = ({ setStep, setData }) => {
 	const navigate = useNavigate();
 	const nextButton = useRef();
 	const [participants, setParticipants] = useState(1);
 	useEffect(() => {
 		setStep(7);
+		setData((prev)=>{
+			const newData = {...prev, id: 'idid', password: 'password'};
+			return newData;
+		})
 	}, []);
 
 	return (
