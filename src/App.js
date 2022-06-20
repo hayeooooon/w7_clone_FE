@@ -8,7 +8,10 @@ import Login from "./components/Login";
 import RegiProfile from "./components/RegiProfile";
 import Interest from "./components/Interest";
 
+import Detail from "./components/Detail";
+
 // 소셜링 등록하기 페이지 컴포넌트
+
 import CreateSocialing from "./components/CreateSocialing";
 import CreateStep1 from "./components/CreateStep1";
 import CreateStep2 from "./components/CreateStep2";
@@ -97,23 +100,24 @@ function App() {
 			</Routes>
 			{popupIsVisible && location.pathname === "/create/step_5" && (
         <div
-        style={{
-          position: 'fixed',
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 0,
-          maxHeight: '100vh'
-        }}>
-				<SearchAddress
-					setAddress={setAddress}
-					popupIsVisible={popupIsVisible}
-					setPopupIsVisible={setPopupIsVisible}
-				/>
+          style={{
+            position: "fixed",
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+            maxHeight: "100vh",
+          }}
+        >
+          <SearchAddress
+            setAddress={setAddress}
+            popupIsVisible={popupIsVisible}
+            setPopupIsVisible={setPopupIsVisible}
+          />
         </div>
-			)}
-		</div>
-	);
+      )}
+    </div>
+  );
 }
 
 export default App;
