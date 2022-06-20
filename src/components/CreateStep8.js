@@ -6,13 +6,21 @@ import TextInput from "./TextInput";
 import ic_fee from "../images/ic_detail_fee.png";
 import ic_fee_info from "../images/ic_fee_info.png";
 
-const CreateStep8 = ({ setStep }) => {
+const CreateStep8 = ({ setStep, setData }) => {
 	const navigate = useNavigate();
 	const nextButton = useRef();
 	const [entryFee, setEntryFee] = useState(null);
 	const [feeValue, setFeeValue] = useState();
 	const [feeInfo, setFeeInfo] = useState();
 	const [btnDisabled, setBtnDisabled] = useState(true);
+
+	useEffect(()=>{
+		setData((prev)=>{
+			const newData = {...prev, nickname: 'nickname'};
+			return newData
+		})
+	},[])
+	
 	useEffect(() => {
 		setBtnDisabled(true);
 		if (entryFee === 0) {

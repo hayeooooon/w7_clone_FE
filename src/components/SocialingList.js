@@ -139,7 +139,7 @@ const SocialingItem = styled.li`
 		padding: 15px 10px;
 		box-sizing: border-box;
 		.info_title {
-			font-size: 14px;
+			font-size: 15px;
 			font-weight: 500;
 			line-height: 1.2;
 			height: 1.2em;
@@ -148,7 +148,7 @@ const SocialingItem = styled.li`
 			white-space: nowrap;
 		}
 		.info_date {
-			font-size: 10px;
+			font-size: 11px;
 			color: #989696;
 			line-height: 1;
 			padding: 10px 0 16px;

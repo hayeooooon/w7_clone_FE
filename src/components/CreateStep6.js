@@ -8,7 +8,7 @@ import ic_detail_approval from "../images/ic_detail_approval.png";
 import ic_detail_approval_active from "../images/ic_detail_approval_active.png";
 import TextInput from "./TextInput";
 
-const CreateStep6 = ({ setStep }) => {
+const CreateStep6 = ({ setStep, setData }) => {
 	const navigate = useNavigate();
 	const [recruitment, setRecruitment] = useState([]);
 	const [btnDisabled, setBtnDisabled] = useState(true);

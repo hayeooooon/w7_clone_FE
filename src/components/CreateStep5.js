@@ -10,6 +10,7 @@ const CreateStep5 = ({
 	setAddress,
 	popupIsVisible,
 	setPopupIsVisible,
+	setData
 }) => {
 	const navigate = useNavigate();
 	useEffect(() => {
