@@ -2,9 +2,11 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
+import TextInput from './TextInput';
+
 const CreateStep2 = ({setStep}) => {
   const navigate = useNavigate();
-	const [inputValue, setInputValue] = useState("");
+	const [textValue, setTextValue] = useState("");
 	const nextButton = useRef();
 
 	useEffect(()=>{
@@ -16,29 +18,7 @@ const CreateStep2 = ({setStep}) => {
 			<h3 className="section_title" style={{ padding: "20px 0 28px" }}>
 				소셜링 제목을 작성해볼까요?
 			</h3>
-			<div className="input_area">
-				<input
-					type="text"
-					placeholder="연희동으로 카페 투어가요 :)"
-					maxLength="80"
-					style={{ fontSize: "14px", color: "#222" }}
-					onInput={(e) => setInputValue(e.target.value)}
-				/>
-			</div>
-			<div
-				style={{
-					fontSize: "10px",
-					color: "#B8B6B6",
-					marginTop: "3px",
-					textAlign: "right",
-					letterSpacing: "0.03em",
-				}}
-			>
-				<span style={{ color: "#222" }}>
-					{inputValue.length > 0 ? inputValue.length : 0}
-				</span>
-				/ 80
-			</div>
+			<TextInput placeholder="연희동으로 함께 카페투어가요 :)" maxLength="80" setTextValue={setTextValue}/>
 			<div
 				style={{
 					position: "fixed",
@@ -52,7 +32,7 @@ const CreateStep2 = ({setStep}) => {
 			>
 				<Button
 					type="button"
-					disabled={inputValue.trim().length >= 5 ? false : true}
+					disabled={textValue?.trim().length >= 5 ? false : true}
 					ref={nextButton}
 					onClick={() => {
 						navigate("/create/step_3");
@@ -69,8 +49,8 @@ const CreateStep2 = ({setStep}) => {
 const Button = styled.button`
 	display: block;
 	width: 100%;
-	height: 40px;
-	line-height: 40px;
+	height: 46px;
+	line-height: 46px;
 	border-radius: 20px;
 	background-color: #e1483c;
 	color: #fff;

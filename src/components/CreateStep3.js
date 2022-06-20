@@ -50,7 +50,7 @@ const CreateStep3 = ({setStep}) => {
 					/>
 					<div ref={preview}>
 						<img src={ic_image} alt="image" style={{width: '23px'}}/>
-						<p style={{color: '#989696', fontSize: '12px', fontWeight: '500'}}>사진 추가</p>
+						<p style={{color: '#989696', fontSize: '13px', fontWeight: '500'}}>사진 추가</p>
 					</div>
 				</ImageFile>
 			</div>
@@ -105,8 +105,8 @@ input[type=file] + div{
 const Button = styled.button`
   display: block;
   width: 100%;
-  height: 40px;
-  line-height: 40px;
+  height: 46px;
+	line-height: 46px;
   border-radius: 20px;
   background-color: #E1483C;
   color: #fff;

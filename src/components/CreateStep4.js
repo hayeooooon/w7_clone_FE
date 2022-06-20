@@ -17,7 +17,7 @@ const CreateStep4 = ({setStep}) => {
 			</h3>
 			<div className="input_area">
         <label>
-        <input type="date"/>
+        <input type="date" onChange={(e)=>{console.log(e.target.value, typeof(e.target.value))}}/>
         <p className="label"></p>
         <div>
           <div>
@@ -28,7 +28,7 @@ const CreateStep4 = ({setStep}) => {
 			</div>
 			<div className="input_area">
         <label>
-        <input type="time"/>
+        <input type="time" onChange={(e)=>{console.log(e.target.value, typeof(e.target.value))}}/>
         </label>
 			</div>
 			<div
@@ -78,8 +78,8 @@ input[type=file] + div{
 const Button = styled.button`
   display: block;
   width: 100%;
-  height: 40px;
-  line-height: 40px;
+  height: 46px;
+	line-height: 46px;
   border-radius: 20px;
   background-color: #E1483C;
   color: #fff;
