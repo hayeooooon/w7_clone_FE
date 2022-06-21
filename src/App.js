@@ -33,6 +33,7 @@ function App() {
     password: "",
     nickname: "",
   });
+  console.log(data);
 
   return (
     <div
@@ -50,30 +51,25 @@ function App() {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} setData={setData} />
-        <Route
-          path="/regiProfile"
-          element={<RegiProfile />}
-          setData={setData}
-        />
+        <Route path="/register" element={<Register />} />
+        <Route path="/regiProfile" element={<RegiProfile />} />
         <Route path="/interest" element={<Interest />} />
-        <Route path="/detail" element={<Detail />} />
         <Route path="/create" element={<CreateSocialing step={step} />}>
           <Route
             path="step_1"
-            element={<CreateStep1 setStep={setStep} />}
+            element={<CreateStep1 setStep={setStep} setData={setData} />}
           ></Route>
           <Route
             path="step_2"
-            element={<CreateStep2 setStep={setStep} />}
+            element={<CreateStep2 setStep={setStep} setData={setData} />}
           ></Route>
           <Route
             path="step_3"
-            element={<CreateStep3 setStep={setStep} />}
+            element={<CreateStep3 setStep={setStep} setData={setData} />}
           ></Route>
           <Route
             path="step_4"
-            element={<CreateStep4 setStep={setStep} />}
+            element={<CreateStep4 setStep={setStep} setData={setData} />}
           ></Route>
           <Route
             path="step_5"
@@ -84,20 +80,22 @@ function App() {
                 setAddress={setAddress}
                 popupIsVisible={popupIsVisible}
                 setPopupIsVisible={setPopupIsVisible}
+                setData={setData}
               />
             }
           ></Route>
           <Route
             path="step_6"
-            element={<CreateStep6 setStep={setStep} />}
+            element={<CreateStep6 setStep={setStep} setData={setData} />}
           ></Route>
+
           <Route
             path="step_7"
-            element={<CreateStep7 setStep={setStep} />}
+            element={<CreateStep7 setStep={setStep} setData={setData} />}
           ></Route>
           <Route
             path="step_8"
-            element={<CreateStep8 setStep={setStep} />}
+            element={<CreateStep8 setStep={setStep} setData={setData} />}
           ></Route>
         </Route>
       </Routes>
