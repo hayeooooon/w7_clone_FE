@@ -8,7 +8,7 @@ import Login from "./components/Login";
 import RegiProfile from "./components/RegiProfile";
 import Interest from "./components/Interest";
 
-import Detail from "./components/Detail";
+// import Detail from "./components/Detail";
 
 // 소셜링 등록하기 페이지 컴포넌트
 
