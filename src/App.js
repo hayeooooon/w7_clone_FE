@@ -24,81 +24,82 @@ import CreateStep8 from "./components/CreateStep8";
 import SearchAddress from "./components/SearchAddress";
 
 function App() {
-	const location = useLocation();
-	const [step, setStep] = useState(1);
-	const [address, setAddress] = useState("");
-	const [popupIsVisible, setPopupIsVisible] = useState(false);
-	const [data, setData] = useState({
-		id: '',
-		password: '',
-		nickname: '',
-	});
-	console.log(data);
+  const location = useLocation();
+  const [step, setStep] = useState(1);
+  const [address, setAddress] = useState("");
+  const [popupIsVisible, setPopupIsVisible] = useState(false);
+  const [data, setData] = useState({
+    id: "",
+    password: "",
+    nickname: "",
+  });
+  console.log(data);
 
-	return (
-		<div
-			className="App"
-			style={{
-				width: "100%",
-				maxWidth: "500px",
-				minHeight: "100vh",
-				margin: "0 auto",
-				border: "1px solid #ddd",
-				overflowX: "hidden",
-			}}
-		>
-			{/* 최대 가로 사이즈 500 고정, 가운데 정렬하는 style */}
-			<Routes>
-				<Route path="/" element={<Main />} />
-				<Route path="/login" element={<Login />} />
-				<Route path="/register" element={<Register />} />
-				<Route path="/regiProfile" element={<RegiProfile />} />
-				<Route path="/interest" element={<Interest />} />
-				<Route path="/create" element={<CreateSocialing step={step} />}>
-					<Route
-						path="step_1"
-						element={<CreateStep1 setStep={setStep} setData={setData} />}
-					></Route>
-					<Route
-						path="step_2"
-						element={<CreateStep2 setStep={setStep} setData={setData} />}
-					></Route>
-					<Route
-						path="step_3"
-						element={<CreateStep3 setStep={setStep} setData={setData} />}
-					></Route>
-					<Route
-						path="step_4"
-						element={<CreateStep4 setStep={setStep} setData={setData} />}
-					></Route>
-					<Route
-						path="step_5"
-						element={
-							<CreateStep5
-								setStep={setStep}
-								address={address}
-								setAddress={setAddress}
-								popupIsVisible={popupIsVisible}
-								setPopupIsVisible={setPopupIsVisible}
-								setData={setData}
-							/>
-						}
-					></Route>
-          	<Route
-						path="step_6"
-						element={<CreateStep6 setStep={setStep} setData={setData} />}
-					></Route>
+  return (
+    <div
+      className="App"
+      style={{
+        width: "100%",
+        maxWidth: "500px",
+        minHeight: "100vh",
+        margin: "0 auto",
+        border: "1px solid #ddd",
+        overflowX: "hidden",
+      }}
+    >
+      {/* 최대 가로 사이즈 500 고정, 가운데 정렬하는 style */}
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/regiProfile" element={<RegiProfile />} />
+        <Route path="/interest" element={<Interest />} />
+        <Route path="/create" element={<CreateSocialing step={step} />}>
           <Route
-						path="step_7"
-						element={<CreateStep7 setStep={setStep} setData={setData} />}
-					></Route>
+            path="step_1"
+            element={<CreateStep1 setStep={setStep} setData={setData} />}
+          ></Route>
           <Route
-						path="step_8"
-						element={<CreateStep8 setStep={setStep} setData={setData}/>}
-					></Route>
-				</Route>
-			</Routes>
-			{popupIsVisible && location.pathname === "/create/step_5" && (
+            path="step_2"
+            element={<CreateStep2 setStep={setStep} setData={setData} />}
+          ></Route>
+          <Route
+            path="step_3"
+            element={<CreateStep3 setStep={setStep} setData={setData} />}
+          ></Route>
+          <Route
+            path="step_4"
+            element={<CreateStep4 setStep={setStep} setData={setData} />}
+          ></Route>
+          <Route
+            path="step_5"
+            element={
+              <CreateStep5
+                setStep={setStep}
+                address={address}
+                setAddress={setAddress}
+                popupIsVisible={popupIsVisible}
+                setPopupIsVisible={setPopupIsVisible}
+                setData={setData}
+              />
+            }
+          ></Route>
+          <Route
+            path="step_6"
+            element={<CreateStep6 setStep={setStep} setData={setData} />}
+          ></Route>
+
+          <Route
+            path="step_7"
+            element={<CreateStep7 setStep={setStep} setData={setData} />}
+          ></Route>
+          <Route
+            path="step_8"
+            element={<CreateStep8 setStep={setStep} setData={setData} />}
+          ></Route>
+        </Route>
+      </Routes>
+      {popupIsVisible && location.pathname === "/create/step_5" && (
         <div
           style={{
             position: "fixed",
