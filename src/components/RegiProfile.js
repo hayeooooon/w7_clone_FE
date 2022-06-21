@@ -1,13 +1,15 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/RegiProfile.css";
+import { useDispatch } from "react-redux";
 
-const Regiprofile = () => {
+const Regiprofile = ({ setData }) => {
   const nagivate = useNavigate();
 
-  const onClickNext = () => {
-    nagivate("/interest");
-  };
+  // const onClickNext = () => {
+  //   nagivate("/interest");
+  // };
+
   return (
     <div className="regiPro_main">
       <div className="regiPro_mid">
@@ -31,7 +33,7 @@ const Regiprofile = () => {
         </ul>
       </div>
       <div className="regi_btn">
-        <button onClick={onClickNext}>다음</button>
+        <button onClick={handleUpload}>다음</button>
       </div>
     </div>
   );

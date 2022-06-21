@@ -28,6 +28,11 @@ function App() {
   const [step, setStep] = useState(1);
   const [address, setAddress] = useState("");
   const [popupIsVisible, setPopupIsVisible] = useState(false);
+  const [data, setData] = useState({
+    id: "",
+    password: "",
+    nickname: "",
+  });
 
   return (
     <div
@@ -45,8 +50,12 @@ function App() {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/regiProfile" element={<RegiProfile />} />
+        <Route path="/register" element={<Register />} setData={setData} />
+        <Route
+          path="/regiProfile"
+          element={<RegiProfile />}
+          setData={setData}
+        />
         <Route path="/interest" element={<Interest />} />
         <Route path="/detail" element={<Detail />} />
         <Route path="/create" element={<CreateSocialing step={step} />}>
