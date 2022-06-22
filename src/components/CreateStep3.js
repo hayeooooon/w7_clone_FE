@@ -1,55 +1,137 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import TimePicker from "rc-time-picker";
+import DatePicker from "react-datepicker";
+import moment from "moment";
+import "rc-time-picker/assets/index.css";
+import "react-datepicker/dist/react-datepicker.css";
+import format from "date-fns/format";
+import addMonths from "date-fns/addMonths";
+import { useDispatch } from "react-redux";
 
-import ic_image from '../images/ic_image.png'
-
-const CreateStep3 = ({setStep, setData}) => {
-  const navigate = useNavigate()
-	const fileInput = useRef();
-	const preview = useRef();
-	const textarea = useRef();
-	const [file, setFile] = useState();
-	useEffect(()=>{
+const CreateStep3 = ({ setStep, setData }) => {
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+	useEffect(() => {
 		setStep(3);
-	},[]);
 
-	// const formData = new FormData();
-	// formData.append("img", file);
-
-	const uploadImg = (e) => {
-		e.preventDefault();
-		if (e.target.files[0]) {
-			setFile(e.target.files[0]);
-			const reader = new FileReader();
-			reader.onload = function (event) {
-				preview.current.setAttribute("style", `background-image: url(${event.target.result})`);
-				preview.current.setAttribute("class", "has_image");
-			};
-			reader.readAsDataURL(e.target.files[0]);
-		}
+	}, []);
+	const [time, setTime] = useState("06:00 PM");
+	var _date = new Date();
+	var next_week = new Date(_date.getTime() + 7 * 24 * 60 * 60 * 1000);
+	const hours = "18";
+	const minutes = "00";
+	var date = moment(next_week).set("hour", hours).set("minute", minutes);
+	const [startDate, setStartDate] = useState(next_week);
+	const [headerDate, setHeaderDate] = useState(
+		`${startDate.getFullYear()}년 ${startDate.getMonth()}월`
+	);
+	const days = ["일", "월", "화", "수", "목", "금", "토"];
+	const [day, setDay] = useState(days[startDate.getDay()]);
+	const [isOpen, setIsOpen] = useState(false);
+	const handleChange = (e) => {
+		setIsOpen(!isOpen);
+		setStartDate(e);
 	};
-
+	const handleClick = (e) => {
+		e.preventDefault();
+		setIsOpen(!isOpen);
+	};
+	useEffect(() => {
+		setDay(days[startDate.getDay()]);
+		setHeaderDate(`${startDate.getFullYear()}년 ${startDate.getMonth()}월`);
+	}, [startDate]);
+	// 달력 헤더에 요일 한국어로 바꾸기
+	const setNameOfDay = (days) => {
+		const kr_day = (days === 'Monday') ? '월' : (days === 'Tuesday') ? '화' : (days === 'Wednesday') ? '수' : (days === 'Thursday') ? '목' : (days === 'Friday') ? '금' : (days === 'Saturday') ? '토' : '일';
+		return kr_day;
+	}
+	// 시간 데이터 api 전송 형식에 맞게 바꾸기
+	const [timeData, setTimeData] = useState();
+	useEffect(()=>{ 
+			const _split = time.split(' ')[0];
+			const _hour = _split.split(':')[0]/1;
+			const _min = _split.split(':')[1];
+		if(time.split(' ')[1] === 'PM'){
+			const new_hour = _hour + 12;
+			const new_time = `${new_hour}:${_min}`
+			setTimeData(new_time);
+		}else{
+			const new_hour = _hour < 10 ? '0'+_hour : _hour;
+			const new_time = `${new_hour}:${_min}`
+			setTimeData(new_time);
+		}
+	}, [time])
+	// 날짜 데이터 api 전송 형식에 맞게 바꾸기
+	const [dateData, setDateData] = useState();
+	useEffect(()=>{
+		const _year = startDate.getFullYear();
+		const _month = startDate.getMonth() < 10 ? '0' + startDate.getMonth() : startDate.getMonth();
+		const _day = startDate.getDate() < 10 ? '0' + startDate.getDate() : startDate.getDate();
+		setDateData(`${_year}-${_month}-${_day}`);
+	},[startDate])
+		
 	return (
 		<>
 			<h3 className="section_title" style={{ padding: "20px 0 28px" }}>
-				소셜링을 소개해볼까요?
+				언제 만날까요?
 			</h3>
-			<div className="input_area">
-				<ImageFile>
-					<input type="file"
-					ref={fileInput}
-					onChange={uploadImg}
+			<div className="input_area date">
+				<button className={`example-custom-input ${isOpen ? 'is_active': ''}`} onClick={handleClick}>
+					{format(startDate, `M.dd (${day})`)}
+				</button>
+				{isOpen && (
+					<DatePicker
+							style={{display: isOpen ? 'block' : 'none'}}
+							renderCustomHeader={({
+							decreaseMonth,
+							prevMonthButtonDisabled,
+							increaseMonth,
+							nextMonthButtonDisabled,
+						}) => (
+							<CalendarHeader>
+								<p>{headerDate}</p>
+								<div>
+									<CalendarButton
+										className="prev"
+										onClick={decreaseMonth}
+										disabled={prevMonthButtonDisabled}
+									>
+										{"<"}
+									</CalendarButton>
+									<CalendarButton
+										className="next"
+										onClick={increaseMonth}
+										disabled={nextMonthButtonDisabled}
+									>
+										{">"}
+									</CalendarButton>
+								</div>
+							</CalendarHeader>
+						)}
+						selected={startDate}
+						onChange={handleChange}
+						inline
+						minDate={moment().toDate()}
+						maxDate={addMonths(new Date(), 6)}
+						formatWeekDay={nameOfDay=>setNameOfDay(nameOfDay)}
+						disabledKeyboardNavigation
 					/>
-					<div ref={preview}>
-						<img src={ic_image} alt="image" style={{width: '23px'}}/>
-						<p style={{color: '#989696', fontSize: '13px', fontWeight: '500'}}>사진 추가</p>
-					</div>
-				</ImageFile>
+				)}
 			</div>
-			<div className="input_area" style={{marginTop: '10px'}}>
-				<textarea ref={textarea} placeholder="내용을 입력해주세요. (선택)" style={{height: '200px', width: '100%'}}></textarea>
-				<p className="txt_info" style={{marginTop: '4px'}}>소셜링 상세 내용을 자세히 작성할수록 멤버들의 신청률도 높아져요!</p>
+			<div className="input_area time">
+				<TimePicker
+					use12Hours
+					showSecond={false}
+					focusOnOpen={true}
+					format="hh:mm A"
+					onChange={(e) => {
+						setTime(e.format("LT"));
+					}}
+					minuteStep={10}
+					defaultValue={date}
+				/>
 			</div>
 			<div
 				style={{
@@ -62,53 +144,78 @@ const CreateStep3 = ({setStep, setData}) => {
 						"linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.5) 100%)",
 				}}
 			>
-				<Button type="button" onClick={()=>{
-					navigate('/create/step_4');
-					setStep(4);
-				}}>다음</Button>
+				<Button
+					type="button"
+					disabled=""
+					onClick={() => {
+						sessionStorage.setItem('startDate', dateData);
+						sessionStorage.setItem('startTime', timeData);
+						navigate("/create/step_4");
+						setStep(4);
+					}}
+				>
+					다음
+				</Button>
 			</div>
 		</>
 	);
 };
 
-
-const ImageFile = styled.label`
-display: block;
-width: 100%;
-input[type=file] + div{
-	height: 82px;
+const CalendarHeader = styled.div`
 	display: flex;
-	flex-direction: column;
-	justify-content: center;
 	align-items: center;
-	background-color: #F4F4F4;
-	border: 1px solid #DBDBDB;
-	border-radius: 6px;
-	box-sizing: border-box;
-	background-size: cover;
-	background-repeat: no-repeat;
-	background-position: center;
-	&.has_image{
-		img, p{
-			display: none;
+	justify-content: space-between;
+	padding: 0 5vw 14px;
+	& > div{
+		margin-right: -3vw;
+	}
+`
+
+const CalendarButton = styled.button`
+	position: relative;
+	width: 30px;
+	height: 30px;
+	font-size: 0;
+	&:before{
+		content: '';
+		position: absolute;
+		right: 0;
+		left: 0;
+		top: 50%;
+		width: 7px;
+		height: 7px;
+		border-top: 2px solid #666;
+		border-right: 2px solid #666;
+		transform: rotate(45deg);
+		margin: -5px auto 0;
+	}
+	&.prev{
+		&:before{
+			border-left: 2px solid #666;
+			border-right: none;
+			transform: rotate(-45deg);
 		}
 	}
-}
-`
+	&:disabled{
+		&:before{
+			border-color: #9E9E9E;
+		}
+	}
+`;
 const Button = styled.button`
-  display: block;
-  width: 100%;
-  height: 46px;
+	display: block;
+	width: 100%;
+	height: 46px;
 	line-height: 46px;
-  border-radius: 20px;
-  background-color: #E1483C;
-  color: #fff;
-  font-size: 15px;
-  text-align: center;
-  font-weight: 500;
-  :disabled{
-    background-color: #d9d9d9;
-    color: #989696;
-  }
-`
+	border-radius: 20px;
+	background-color: #e1483c;
+	color: #fff;
+	font-size: 15px;
+	text-align: center;
+	font-weight: 500;
+	:disabled {
+		background-color: #d9d9d9;
+		color: #989696;
+	}
+`;
 export default CreateStep3;

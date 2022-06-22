@@ -1,113 +1,101 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import TimePicker from "rc-time-picker";
-import DatePicker from "react-datepicker";
-import moment from "moment";
-import "rc-time-picker/assets/index.css";
-import "react-datepicker/dist/react-datepicker.css";
-import format from "date-fns/format";
-import addMonths from "date-fns/addMonths";
-import ic_when_date from "../images/ic_when_date.png";
-import ic_when_time from "../images/ic_when_date.png";
+import { useDispatch } from "react-redux";
 
-const CreateStep4 = ({ setStep, setData }) => {
+import ic_location from "../images/ic_location.png";
+
+const CreateStep4 = ({
+	setStep,
+	address,
+	setAddress,
+	popupIsVisible,
+	setPopupIsVisible,
+	setData
+}) => {
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	useEffect(() => {
 		setStep(4);
-	}, []);
-	const [time, setTime] = useState("06:00");
-	var _date = new Date();
-	var next_week = new Date(_date.getTime() + 7 * 24 * 60 * 60 * 1000);
-	const hours = "18";
-	const minutes = "00";
-	var date = moment(next_week).set("hour", hours).set("minute", minutes);
-	const [startDate, setStartDate] = useState(next_week);
-	const [headerDate, setHeaderDate] = useState(
-		`${startDate.getFullYear()}년 ${startDate.getMonth()}월`
-	);
-	const days = ["일", "월", "화", "수", "목", "금", "토"];
-	const [day, setDay] = useState(days[startDate.getDay()]);
-	const [isOpen, setIsOpen] = useState(false);
-	const handleChange = (e) => {
-		setIsOpen(!isOpen);
-		setStartDate(e);
-	};
-	const handleClick = (e) => {
-		e.preventDefault();
-		setIsOpen(!isOpen);
-	};
-	useEffect(() => {
-		setDay(days[startDate.getDay()]);
-		setHeaderDate(`${startDate.getFullYear()}년 ${startDate.getMonth()}월`);
-	}, [startDate]);
-	const setNameOfDay = (days) => {
-		const kr_day = (days === 'Monday') ? '월' : (days === 'Tuesday') ? '화' : (days === 'Wednesday') ? '수' : (days === 'Thursday') ? '목' : (days === 'Friday') ? '금' : (days === 'Saturday') ? '토' : '일';
-		return kr_day;
-	}
 
-	
+	}, []);
+	const radioRef = useRef(null);
+	const meetingTypeRadio = ["offline", "online"];
+	const [meetingType, setMeetingType] = useState(null);
+	const [activateButton, setActivateButton] = useState(false);
+	useEffect(() => {
+		setActivateButton(false);
+		if (meetingTypeRadio[meetingType] === "online") {
+			setActivateButton(true);
+			setAddress("");
+		} else if (meetingTypeRadio[meetingType] === "offline" && address !== "") {
+			setActivateButton(true);
+		}
+	}, [meetingType, address]);
+
 	return (
 		<>
 			<h3 className="section_title" style={{ padding: "20px 0 28px" }}>
-				언제 만날까요?
+				어디서 만날까요?
 			</h3>
-			<div className="input_area date">
-				<button className={`example-custom-input ${isOpen ? 'is_active': ''}`} onClick={handleClick}>
-					{format(startDate, `M.dd (${day})`)}
-				</button>
-				{isOpen && (
-					<DatePicker
-							style={{display: isOpen ? 'block' : 'none'}}
-							renderCustomHeader={({
-							decreaseMonth,
-							prevMonthButtonDisabled,
-							increaseMonth,
-							nextMonthButtonDisabled,
-						}) => (
-							<CalendarHeader>
-								<p>{headerDate}</p>
-								<div>
-									<CalendarButton
-										className="prev"
-										onClick={decreaseMonth}
-										disabled={prevMonthButtonDisabled}
-									>
-										{"<"}
-									</CalendarButton>
-									<CalendarButton
-										className="next"
-										onClick={increaseMonth}
-										disabled={nextMonthButtonDisabled}
-									>
-										{">"}
-									</CalendarButton>
-								</div>
-							</CalendarHeader>
-						)}
-						selected={startDate}
-						onChange={handleChange}
-						inline
-						minDate={moment().toDate()}
-						maxDate={addMonths(new Date(), 6)}
-						formatWeekDay={nameOfDay=>setNameOfDay(nameOfDay)}
-						disabledKeyboardNavigation
-					/>
-				)}
+			<div className="input_area">
+				<ul style={{ display: "flex", gap: "8px" }}>
+					{meetingTypeRadio.map((v, i) => {
+						return (
+							<li
+								key={i}
+								style={{
+									flexBasis: "50%",
+								}}
+							>
+								<label
+									style={{
+										display: "block",
+										height: "50px",
+										lineHeight: "46px",
+										border: `1px solid ${
+											meetingType === i ? "#E1483C" : "#DBDBDB"
+										}`,
+										backgroundColor: `${
+											meetingType === i ? "#E1483C" : "transparent"
+										}`,
+										color: `${meetingType === i ? "#fff" : "#222"}`,
+										borderRadius: "6px",
+										textAlign: "center",
+										boxSizing: 'border-box',
+									}}
+								>
+									<input
+										type="radio"
+										name="meetingType"
+										value={v}
+										checked={meetingType === i}
+										onChange={() => setMeetingType(i)}
+									/>
+									{v === "offline" ? "오프라인" : "온라인"}
+								</label>
+							</li>
+						);
+					})}
+				</ul>
 			</div>
-			<div className="input_area time">
-				<TimePicker
-					use12Hours
-					showSecond={false}
-					focusOnOpen={true}
-					format="hh:mm A"
-					onChange={(e) => {
-						setTime(e.format("LT"));
-					}}
-					minuteStep={10}
-					defaultValue={date}
-				/>
-			</div>
+			{meetingTypeRadio[meetingType] === "offline" && (
+				<div className="address_area" style={{ marginTop: "10px" }}>
+					<p
+						onClick={() => setPopupIsVisible(true)}
+						style={{
+							background: `url(${ic_location}) left center / 28px 45px no-repeat`,
+							height: "45px",
+							lineHeight: "44px",
+							borderBottom: "1px solid #d9d9d9",
+							paddingLeft: "28px",
+							color: address !== "" ? "#222" : "#989696",
+						}}
+					>
+						{address ? address : "장소를 입력해주세요."}
+					</p>
+				</div>
+			)}
 			<div
 				style={{
 					position: "fixed",
@@ -121,8 +109,10 @@ const CreateStep4 = ({ setStep, setData }) => {
 			>
 				<Button
 					type="button"
-					disabled=""
+					disabled={activateButton ? false : true}
 					onClick={() => {
+						sessionStorage.setItem('meetingType', meetingTypeRadio[meetingType])
+						sessionStorage.setItem('address', address)
 						navigate("/create/step_5");
 						setStep(5);
 					}}
@@ -134,44 +124,27 @@ const CreateStep4 = ({ setStep, setData }) => {
 	);
 };
 
-const CalendarHeader = styled.div`
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 0 5vw 14px;
-	& > div{
-		margin-right: -3vw;
-	}
-`
-
-const CalendarButton = styled.button`
-	position: relative;
-	width: 30px;
-	height: 30px;
-	font-size: 0;
-	&:before{
-		content: '';
-		position: absolute;
-		right: 0;
-		left: 0;
-		top: 50%;
-		width: 7px;
-		height: 7px;
-		border-top: 2px solid #666;
-		border-right: 2px solid #666;
-		transform: rotate(45deg);
-		margin: -5px auto 0;
-	}
-	&.prev{
-		&:before{
-			border-left: 2px solid #666;
-			border-right: none;
-			transform: rotate(-45deg);
-		}
-	}
-	&:disabled{
-		&:before{
-			border-color: #9E9E9E;
+const ImageFile = styled.label`
+	display: block;
+	width: 100%;
+	input[type="file"] + div {
+		height: 82px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		background-color: #f4f4f4;
+		border: 1px solid #dbdbdb;
+		border-radius: 6px;
+		box-sizing: border-box;
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: center;
+		&.has_image {
+			img,
+			p {
+				display: none;
+			}
 		}
 	}
 `;

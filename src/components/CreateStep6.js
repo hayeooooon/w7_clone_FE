@@ -1,112 +1,110 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-
-import ic_detail_order from "../images/ic_detail_order.png";
-import ic_detail_order_active from "../images/ic_detail_order_active.png";
-import ic_detail_approval from "../images/ic_detail_approval.png";
-import ic_detail_approval_active from "../images/ic_detail_approval_active.png";
-import TextInput from "./TextInput";
+import { useDispatch } from "react-redux";
 
 const CreateStep6 = ({ setStep, setData }) => {
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const [recruitment, setRecruitment] = useState([]);
-	const [btnDisabled, setBtnDisabled] = useState(true);
-	const [textValue, setTextValue] = useState();
 	const nextButton = useRef();
+	const [participants, setParticipants] = useState(3);
 	useEffect(() => {
 		setStep(6);
+		setData((prev)=>{
+			const newData = {...prev, id: 'idid', password: 'password'};
+			return newData;
+		})
 	}, []);
 
-	useEffect(() => {
-		setBtnDisabled(true);
-		if (recruitment === "early bird") {
-			setBtnDisabled(false);
-		} else if (recruitment === "approved" && textValue?.trim().length >= 10) {
-			setBtnDisabled(false);
-		}
-	}, [textValue, recruitment]);
 	return (
 		<>
-			<h3 className="section_title" style={{ padding: "20px 0 28px" }}>
-				어떻게 멤버를 모집할까요?
+			<h3 className="section_title" style={{ padding: "20px 0 0" }}>
+				몇 명과 함께할까요?
+				<span
+					style={{
+						display: "block",
+						fontSize: "15px",
+						color: "#989696",
+						marginTop: "14px",
+					}}
+				>
+					본인을 포함한 총 참여 인원 수를 알려주세요.
+				</span>
 			</h3>
-			<div className="input_area">
-				<RadioBox className="input_box">
-					<label className={recruitment === "early bird" ? "is_active" : ""}>
-						<input
-							type="radio"
-							name="recruitmentType"
-							value="early bird"
-							onChange={(e) => setRecruitment(e.target.value)}
-						/>
-						<span
-							style={{
-								backgroundImage: `url(${
-									recruitment === "early bird"
-										? ic_detail_order_active
-										: ic_detail_order
-								})`,
-							}}
-						></span>
-						<dl>
-							<dt>선착순</dt>
-							<dd>
-								멤버들의 신청과 동시에 참여가 완료돼요. <br />
-								누구나 참여할 수 있어서 신쳥률이 높아요.
-							</dd>
-						</dl>
-					</label>
-				</RadioBox>
-				<RadioBox className="input_box">
-					<label className={recruitment === "approved" ? "is_active" : ""}>
-						<input
-							type="radio"
-							name="recruitmentType"
-							value="approved"
-							onChange={(e) => setRecruitment(e.target.value)}
-						/>
-						<span
-							style={{
-								backgroundImage: `url(${
-									recruitment === "approved"
-										? ic_detail_approval_active
-										: ic_detail_approval
-								})`,
-							}}
-						></span>
-						<dl>
-							<dt>승인제</dt>
-							<dd>
-								호스트가 멤버를 수락하거나 거절할 수 있어요. <br />
-								질문을 작성하고 멤버들의 답변을 통해
-								<br />
-								취향이 통하는 사람들과 만날 수 있어요.
-							</dd>
-						</dl>
-					</label>
-				</RadioBox>
-			</div>
-			{recruitment === "approved" && (
+			<div style={{margin: '40px 0 30px'}}>
+				<div
+					style={{
+						display: "flex",
+						alignItems: "center",
+						width: "100%",
+						justifyContent: "center",
+					}}
+				>
+					<MinusButton
+						type="button"
+						disabled={participants <= 3}
+						onClick={() => {
+							if (participants > 3) {
+								setParticipants(participants - 1);
+							}
+						}}
+					>
+						빼기
+					</MinusButton>
+					<span
+						style={{
+							fontSize: "22px",
+							fontWeight: "700",
+							padding: "0 40px",
+							marginTop: "-4px",
+							minWidth: "2em",
+							textAlign: "center",
+						}}
+					>
+						{participants}
+					</span>
+					<PlusButton
+						type="button"
+						disabled={participants === 10}
+						onClick={() => {
+							if (participants < 10) {
+								setParticipants(participants + 1);
+							}
+						}}
+					>
+						더하기
+					</PlusButton>
+				</div>
 				<div>
 					<p
 						style={{
-							fontSize: "16px",
+							fontSize: "13px",
+							textAlign: "center",
 							fontWeight: "500",
-							lineHeight: "1.3",
-							margin: "30px 0 15px",
+							marginTop: "10px",
 						}}
 					>
-						멤버들의 소셜링 신청을 위한 질문을 작성해주세요.
+						온라인
 					</p>
-					<TextInput
-						placeholder="예시) 어떤 관심사를 갖고 계신가요?"
-						maxLength="80"
-						setTextValue={setTextValue}
-					/>
 				</div>
-			)}
-
+			</div>
+			<div>
+				<dl
+					style={{
+						borderRadius: "6px",
+						backgroundColor: "#F4F4F4",
+						padding: "12px 14px",
+						fontSize: "13px",
+						color: "#656060",
+					}}
+				>
+					<dt style={{ color: "#222", fontWeight: "500", marginBottom: "8px" }}>
+						소셜링 인원 제한 안내
+					</dt>
+					<dd style={{ marginBottom: "2px" }}>오프라인 : 3명 ~ 10명</dd>
+					<dd>온라인 : 3명 ~ 10명</dd>
+				</dl>
+			</div>
 			<div
 				style={{
 					position: "fixed",
@@ -121,8 +119,8 @@ const CreateStep6 = ({ setStep, setData }) => {
 				<Button
 					type="button"
 					ref={nextButton}
-					disabled={btnDisabled}
 					onClick={() => {
+						sessionStorage.setItem('limitHeadcount', participants)
 						navigate("/create/step_7");
 						setStep(7);
 					}}
@@ -134,51 +132,52 @@ const CreateStep6 = ({ setStep, setData }) => {
 	);
 };
 
-const RadioBox = styled.div`
-	font-size: 15px;
-	label {
-		width: 100%;
-		display: flex;
-		flex-direction: row;
-		gap: 14px;
-		align-items: center;
-		padding: 18px;
-		border: 1px solid #d9d9d9;
-		border-radius: 6px;
-		box-sizing: border-box;
-		&.is_active {
-			border-color: #e1483c;
-			background-color: #e1483c;
-			dt,
-			dd {
-				color: #fff;
-			}
-		}
-		input {
-			flex: none;
-		}
-		span {
-			display: inline-block;
-			width: 20px;
-			height: 20px;
-			background-position: center;
-			background-repeat: no-repeat;
-			background-size: 20px;
-		}
-		dt {
-			margin-bottom: 4px;
-			font-weight: 500;
-		}
-		dd {
-			color: #989696;
-			line-height: 1.5;
-		}
+const MinusButton = styled.button`
+	position: relative;
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	background: #e1483c;
+	font-size: 0;
+	&:before {
+		content: "";
+		position: absolute;
+		left: 0;
+		right: 0;
+		width: 12px;
+		height: 2px;
+		background-color: #fff;
+		margin: -1px auto 0;
 	}
-	& + .input_box {
-		margin-top: 12px;
+	&:disabled {
+		background-color: #dbdbdb;
 	}
 `;
-
+const PlusButton = styled.button`
+	position: relative;
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	background: #e1483c;
+	font-size: 0;
+	&:before,
+	&:after {
+		content: "";
+		position: absolute;
+		left: 0;
+		right: 0;
+		width: 12px;
+		height: 2px;
+		background-color: #fff;
+		margin: -1px auto 0;
+	}
+	&:after {
+		transform: rotate(90deg);
+	}
+	&:disabled {
+		background-color: #dbdbdb;
+	}
+`;
 const Button = styled.button`
 	display: block;
 	width: 100%;

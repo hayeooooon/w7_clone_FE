@@ -1,32 +1,22 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
-const MainCategory = () => {
-	const category = [
-		"문화·예술",
-		"운동·액티비티",
-		"푸드·드링크",
-		"취미",
-		"여행·나들이",
-		"창작",
-		"성장·자기계발",
-	];
+const MainCategory = ({categories, setTab}) => {
 	const [activeTab, setActiveTab] = useState(1);
-
 	return (
 		<>
 			<Category className="set_inner">
 				<ul>
-					{category.map((v, i) => {
+					{categories?.map((v, i) => {
 						return (
 							<li
 								key={i}
 								onClick={() => {
-									setActiveTab(i);
+									setActiveTab(v.id);
 								}}
 								style={{
 									borderBottom:
-										activeTab === i
+										activeTab === v.id
 											? "2px solid #373535"
 											: "2px solid transparent",
 								}}
@@ -34,11 +24,14 @@ const MainCategory = () => {
 								<button
 									type="button"
 									style={{
-										color: activeTab === i ? "#222" : "#989696",
-										fontWeight: activeTab === i ? "500" : "400",
+										color: activeTab === v.id ? "#222" : "#989696",
+										fontWeight: activeTab === v.id ? "500" : "400",
+									}}
+									onClick={()=>{
+										setTab(v.id);
 									}}
 								>
-									{v}
+									{v.name}
 								</button>
 							</li>
 						);

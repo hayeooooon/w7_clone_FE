@@ -1,12 +1,24 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
+import {loadCategoryAxios} from '../redux/moduels/socialing';
+
 const CreateStep1 = ({setStep, setData}) => {
+	const dispatch = useDispatch();
   const navigate = useNavigate()
   const nextButton = useRef();
 	const [checkedCategory, setCheckedCategory] = useState(null);
-	const category = [1, 2, 3, 4, 5, 6];
+	const categoryStates = useSelector((state)=>state.socialing.category);
+	const [category, setCategory] = useState();
+
+	useEffect(()=>{
+		if(categoryStates.length > 0){
+			setCategory(categoryStates);
+		}
+	},[categoryStates])
+	
 	const colors = [
 		"#2e5986",
 		"#6FC4E3",
@@ -18,6 +30,7 @@ const CreateStep1 = ({setStep, setData}) => {
 	];
 	useEffect(()=>{
 		setStep(1);
+		dispatch(loadCategoryAxios());
 	},[]);
   
 	return (
@@ -26,13 +39,13 @@ const CreateStep1 = ({setStep, setData}) => {
 				어떤 소셜링을 열어볼까요?
 			</h3>
 			<CagegoryGroup>
-				{category.map((v, i) => {
+				{category?.map((v, i) => {
 					return (
 						<li key={i}>
 							<label
 								style={{
 									border:
-										checkedCategory === i
+										checkedCategory === v.id
 											? "1px solid #E1483C"
 											: "1px solid #d9d9d9",
 								}}
@@ -40,7 +53,7 @@ const CreateStep1 = ({setStep, setData}) => {
 								<input
 									type="radio"
 									name="category"
-									onChange={() => setCheckedCategory(i)}
+									onChange={() => setCheckedCategory(v.id)}
 								/>
 								<span
 									className="icon_box"
@@ -48,9 +61,10 @@ const CreateStep1 = ({setStep, setData}) => {
 								></span>
 								<div className="text_box">
 									<p>
-										문화·예술 <label>인기</label>
+										{v.name} 
+										{/* <label>인기</label> */}
 									</p>
-									<span>전시·영화·뮤지컬·공연·박물관·연극</span>
+									<span>{v.sub}</span>
 								</div>
 							</label>
 						</li>
@@ -69,6 +83,7 @@ const CreateStep1 = ({setStep, setData}) => {
 				}}
 			>
 				<Button type="button" disabled={checkedCategory !== null ? false : true} ref={nextButton} onClick={()=>{
+					sessionStorage.setItem('category', checkedCategory);
 					navigate('/create/step_2');
 					setStep(2);
 				}}>다음</Button>

@@ -1,107 +1,177 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useDispatch } from "react-redux";
+
+import TextInput from "./TextInput";
+import ic_fee from "../images/ic_detail_fee.png";
+import ic_fee_info from "../images/ic_fee_info.png";
 
 const CreateStep7 = ({ setStep, setData }) => {
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const nextButton = useRef();
-	const [participants, setParticipants] = useState(1);
-	useEffect(() => {
+	const [entryFee, setEntryFee] = useState(null);
+	const [feeValue, setFeeValue] = useState();
+	const [feeInfo, setFeeInfo] = useState();
+	const [btnDisabled, setBtnDisabled] = useState(true);
+	const [feeData, setFeeData] = useState();
+	const [feeInfoData, setFeeInfoData] = useState();
+
+	useEffect(()=>{
 		setStep(7);
 		setData((prev)=>{
-			const newData = {...prev, id: 'idid', password: 'password'};
-			return newData;
+			const newData = {...prev, nickname: 'nickname'};
+			return newData
 		})
+	},[])
+	
+	useEffect(() => {
+		setBtnDisabled(true);
+		if (entryFee === 0) {
+			setFeeData(0);
+			setFeeInfo('');
+			setBtnDisabled(false);
+		}
+		if (
+			entryFee !== 0 &&
+			feeValue?.trim().length > 3 &&
+			feeInfo?.trim().length > 0
+		) {
+			console.log(feeInfo,feeValue)
+			setFeeData(parseInt(feeValue))
+			setFeeInfo(feeInfo);
+			setBtnDisabled(false);
+		}
+	}, [entryFee, feeValue, feeInfo]);
+
+	useEffect(() => {
+		setStep(8);
 	}, []);
 
 	return (
 		<>
 			<h3 className="section_title" style={{ padding: "20px 0 0" }}>
-				몇 명과 함께할까요?
-				<span
-					style={{
-						display: "block",
-						fontSize: "15px",
-						color: "#989696",
-						marginTop: "14px",
-					}}
-				>
-					본인을 포함한 총 참여 인원 수를 알려주세요.
-				</span>
+				참가비가 필요한가요?
 			</h3>
-			<div style={{margin: '40px 0 30px'}}>
-				<div
-					style={{
-						display: "flex",
-						alignItems: "center",
-						width: "100%",
-						justifyContent: "center",
-					}}
-				>
-					<MinusButton
-						type="button"
-						disabled={participants === 1}
-						onClick={() => {
-							if (participants > 0) {
-								setParticipants(participants - 1);
-							}
-						}}
-					>
-						빼기
-					</MinusButton>
-					<span
+			<div style={{ margin: "20px 0" }}>
+				<ul style={{ display: "flex", gap: "8px" }}>
+					<li
 						style={{
-							fontSize: "22px",
-							fontWeight: "700",
-							padding: "0 40px",
-							marginTop: "-4px",
-							minWidth: "2em",
-							textAlign: "center",
+							flexBasis: "50%",
 						}}
 					>
-						{participants}
-					</span>
-					<PlusButton
-						type="button"
-						disabled={participants === 10}
-						onClick={() => {
-							if (participants < 10) {
-								setParticipants(participants + 1);
-							}
-						}}
-					>
-						더하기
-					</PlusButton>
-				</div>
-				<div>
-					<p
+						<label
+							style={{
+								display: "block",
+								height: "50px",
+								lineHeight: "46px",
+								border: `1px solid ${entryFee === 0 ? "#E1483C" : "#DBDBDB"}`,
+								backgroundColor: `${
+									entryFee === 0 ? "#E1483C" : "transparent"
+								}`,
+								color: `${entryFee === 0 ? "#fff" : "#222"}`,
+								borderRadius: "6px",
+								textAlign: "center",
+								boxSizing: "border-box",
+							}}
+						>
+							<input
+								type="radio"
+								name="meetingType"
+								checked={entryFee === 0 ? true : false}
+								onChange={() => setEntryFee(0)}
+							/>
+							무료
+						</label>
+					</li>
+					<li
 						style={{
-							fontSize: "13px",
-							textAlign: "center",
-							fontWeight: "500",
-							marginTop: "10px",
+							flexBasis: "50%",
 						}}
 					>
-						온라인
-					</p>
-				</div>
-			</div>
-			<div>
-				<dl
-					style={{
-						borderRadius: "6px",
-						backgroundColor: "#F4F4F4",
-						padding: "12px 14px",
-						fontSize: "13px",
-						color: "#656060",
-					}}
-				>
-					<dt style={{ color: "#222", fontWeight: "500", marginBottom: "8px" }}>
-						소셜링 인원 제한 안내
-					</dt>
-					<dd style={{ marginBottom: "2px" }}>오프라인 : 3명 ~ 10명</dd>
-					<dd>온라인 : 3명 ~ 10명</dd>
-				</dl>
+						<label
+							style={{
+								display: "block",
+								height: "50px",
+								lineHeight: "46px",
+								border: `1px solid ${entryFee > 0 ? "#E1483C" : "#DBDBDB"}`,
+								backgroundColor: `${entryFee > 0 ? "#E1483C" : "transparent"}`,
+								color: `${entryFee > 0 ? "#fff" : "#222"}`,
+								borderRadius: "6px",
+								textAlign: "center",
+								boxSizing: "border-box",
+							}}
+						>
+							<input
+								type="radio"
+								name="meetingType"
+								checked={entryFee > 0 ? true : false}
+								onChange={() => setEntryFee(1)}
+							/>
+							유료
+						</label>
+					</li>
+				</ul>
+				{entryFee > 0 && (
+					<>
+						<div style={{ marginTop: "22px" }}>
+							<p
+								className="label"
+								style={{
+									display: "flex",
+									alignItems: "center",
+									fontSize: "13px",
+									marginBottom: "6px",
+								}}
+							>
+								<em
+									style={{
+										display: "inline-block",
+										background: `url(${ic_fee}) center / 20px 20px no-repeat`,
+										width: "20px",
+										height: "20px",
+										margin: "1px 3px 0 0",
+									}}
+								></em>
+								참가비
+							</p>
+							<TextInput
+								placeholder="참가비를 입력해주세요. (최소 금액 1,000원)"
+								setTextValue={setFeeValue}
+								st="box"
+								hideLength={true}
+							/>
+						</div>
+						<div style={{ marginTop: "22px" }}>
+							<p
+								className="label"
+								style={{
+									display: "flex",
+									alignItems: "center",
+									fontSize: "13px",
+									marginBottom: "6px",
+								}}
+							>
+								<em
+									style={{
+										display: "inline-block",
+										background: `url(${ic_fee_info}) center / 20px 20px no-repeat`,
+										width: "20px",
+										height: "20px",
+										margin: "1px 3px 0 0",
+									}}
+								></em>
+								참가비 정보
+							</p>
+							<TextInput
+								placeholder="참가비에 포함된 사항을 알려주세요."
+								setTextValue={setFeeInfo}
+								hideLength={true}
+							/>
+						</div>
+					</>
+				)}
 			</div>
 			<div
 				style={{
@@ -117,64 +187,22 @@ const CreateStep7 = ({ setStep, setData }) => {
 				<Button
 					type="button"
 					ref={nextButton}
+					disabled={btnDisabled}
 					onClick={() => {
+						sessionStorage.setItem('entryFee', feeData);
+						sessionStorage.setItem('entryFeeInfo', feeInfo);
 						navigate("/create/step_8");
 						setStep(8);
+						// dispatch()
 					}}
 				>
-					다음
+					등록하기
 				</Button>
 			</div>
 		</>
 	);
 };
 
-const MinusButton = styled.button`
-	position: relative;
-	width: 24px;
-	height: 24px;
-	border-radius: 50%;
-	background: #e1483c;
-	font-size: 0;
-	&:before {
-		content: "";
-		position: absolute;
-		left: 0;
-		right: 0;
-		width: 12px;
-		height: 2px;
-		background-color: #fff;
-		margin: -1px auto 0;
-	}
-	&:disabled {
-		background-color: #dbdbdb;
-	}
-`;
-const PlusButton = styled.button`
-	position: relative;
-	width: 24px;
-	height: 24px;
-	border-radius: 50%;
-	background: #e1483c;
-	font-size: 0;
-	&:before,
-	&:after {
-		content: "";
-		position: absolute;
-		left: 0;
-		right: 0;
-		width: 12px;
-		height: 2px;
-		background-color: #fff;
-		margin: -1px auto 0;
-	}
-	&:after {
-		transform: rotate(90deg);
-	}
-	&:disabled {
-		background-color: #dbdbdb;
-	}
-`;
 const Button = styled.button`
 	display: block;
 	width: 100%;

@@ -18,7 +18,8 @@ const Interest = () => {
         <button>문화·예술</button>
         <button>운동·액티비티</button>
         <button>푸드·드링크</button>
-        <button>여행·레져</button>
+        <button>취미</button>
+        <button>여행·나들이</button>
         <button>비즈니스·사교</button>
         <button>추천받는다</button>
       </div>
