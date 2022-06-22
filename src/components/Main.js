@@ -9,7 +9,7 @@ import MainCategory from "./MainCategory";
 import MainSlider from "./MainSlider";
 import SocialingList from "./SocialingList";
 
-const Main = () => {
+const Main = ({socialing_id}) => {
 	const dispatch = useDispatch();
 	const [category, setCategory] = useState(0);
 	const categoryStates = useSelector((state)=>state.socialing.category);
@@ -43,7 +43,7 @@ const Main = () => {
 	return (
 		<>
 			<div className="container" style={{minHeight: '100vh',backgroundColor: '#F4F4F4'}}>
-				<MainCategory categories={categoryStates} setTab={setTab}></MainCategory>
+				<MainCategory categories={categoryStates} setTab={setTab} ></MainCategory>
 				<MainSlider></MainSlider>
         <SocialingList stlyle={{backgroundColor: '#F4F4F4'}} socialings={socialings}></SocialingList>
 			</div>

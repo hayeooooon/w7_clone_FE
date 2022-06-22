@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 
@@ -9,9 +9,10 @@ import ic_detail_approval from "../images/ic_detail_approval.png";
 import ic_detail_approval_active from "../images/ic_detail_approval_active.png";
 import TextInput from "./TextInput";
 
-const CreateStep5 = ({ setStep, setData }) => {
+const CreateStep5 = ({ setStep, setData, page }) => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const param = useParams().id;
 	const [recruitment, setRecruitment] = useState([]);
 	const [btnDisabled, setBtnDisabled] = useState(true);
 	const [textValue, setTextValue] = useState();
@@ -127,7 +128,7 @@ const CreateStep5 = ({ setStep, setData }) => {
 					onClick={() => {
 						sessionStorage.setItem('recruitmentType', recruitment);
 						sessionStorage.setItem('question', textValue);
-						navigate("/create/step_6");
+						navigate(page !== 'edit' ? '/create/step_6' : `/edit/${param}/step_6`);
 						setStep(6);
 					}}
 				>

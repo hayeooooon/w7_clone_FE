@@ -4,9 +4,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { loadDetailAxios, loadMembersAxios } from "../redux/moduels/socialing";
+import { loadUserInfoAxios } from "../redux/moduels/user";
 
 import { IoMdPeople } from "react-icons/io";
-import { IoHeartCircleSharp } from "react-icons/io5";
+import { IoSettingsSharp } from "react-icons/io5";
 import { AiFillDollarCircle, AiFillInfoCircle } from "react-icons/ai";
 import { MdAccessTimeFilled, MdAccountBox } from "react-icons/md";
 import { BsCalendar3 } from "react-icons/bs";
@@ -15,11 +16,11 @@ import { set } from "date-fns";
 
 const Detail = () => {
 	const dispatch = useDispatch();
-	const nagivate = useNavigate();
+	const navigate = useNavigate();
 	const id = useParams().id;
 	const dataState = useSelector((state) => state.socialing.view);
-	const membersState = useSelector((state) => state.socialing.members)[0]
-		?.members;
+	const membersState = useSelector((state) => state.socialing.members)
+	const userState = useSelector((state)=> state.user.user)[0];
 	const [data, setData] = useState();
 	const [members, setMembers] = useState();
 	const [date, setDate] = useState();
@@ -51,6 +52,9 @@ const Detail = () => {
 	}
 	useEffect(() => {
 		dispatch(loadDetailAxios(id));
+		const token = sessionStorage.getItem('token');
+		if(token) dispatch(loadUserInfoAxios());
+
 	}, []);
 	useEffect(() => {
 		setData(dataState);
@@ -65,9 +69,10 @@ const Detail = () => {
 	}, [data]);
 	useEffect(() => {
 		setMembers(membersState);
+		console.log(membersState, '444@@@@@@@@@@@@@@')
 	}, [membersState]);
 
-	console.log(data, members);
+	console.log(data, members, userState);
 
 	return (
 		<div className="detail_main">
@@ -78,9 +83,9 @@ const Detail = () => {
 					}}
 				></span>
 				<ul className="labels_group">
-					{data?.limitHeadcount > members?.members.length + 1 && (
+					{data?.limitHeadcount > members?.members?.length + 1 && (
 						<li className="info_label">
-							잔여 {data?.limitHeadcount - (members?.members.length + 1)}명
+							잔여 {data?.limitHeadcount - (members?.members?.length + 1)}명
 						</li>
 					)}
 					{/* <li className="info_label subject">서핑</li> */}
@@ -97,7 +102,7 @@ const Detail = () => {
 						></div>
 					</div>
 					<div className="text_box">
-						<p>{members?.owner.name}</p>
+						<p>{members?.owner?.name}</p>
 						<h4>{data?.title}</h4>
 					</div>
 				</div>
@@ -144,11 +149,11 @@ const Detail = () => {
 							></span>
 						</div>
 						<div className="Detail_member_profile_Desc">
-							<span>{members?.owner.name}</span>
+							<span>{members?.owner?.name}</span>
 							{members?.owner?.greeting && <p>{members?.owner?.greeting}</p>}
 						</div>
 					</div>
-					{members?.members.length > 0 && (
+					{members?.members?.length > 0 && (
 						members.members.map((member,index)=>{
 							return (
 								<div className="member_list" key={index}>
@@ -188,7 +193,7 @@ const Detail = () => {
 									</div>
 									<div className="info_desc">
 										<AiFillInfoCircle size={19} />
-										<p>문토 수수료, 쾌적한 요가 스튜디오, 1:1 핸즈온, 인생샷</p>
+										<p>{data?.entryFeeInfo}</p>
 									</div>
 								</>
 							) 
@@ -201,21 +206,29 @@ const Detail = () => {
 							<BsCalendar3 size={19} />
 							<p>{date} {time}</p>
 						</div>
-						<div className="info_desc">
-							<ImLocation size={19} />
-							<p>{data?.address}</p>
-						</div>
+						{
+							data?.meetingType === 'offline' && (
+								<div className="info_desc">
+									<ImLocation size={19} />
+									<p>{data?.address}</p>
+								</div>
+							)
+						}
 					</div>
 				</div>
-				<div className="detail_map">
-					<div className="detail_map_inner">
-						<img src="https://velog.velcdn.com/images/guswnschl45/post/63ffa478-1d13-45d0-89e1-7a644fc28316/image.jpg" />
-						<div className="detail_map_desc">
-							<p>{data?.address?.split(" ")[0]} {data?.address?.split(" ")[1]}</p>
-							<span>{data?.address}</span>
+				{
+					data?.meetingType === 'offline' && (
+						<div className="detail_map">
+							<div className="detail_map_inner">
+								<img src="https://velog.velcdn.com/images/guswnschl45/post/63ffa478-1d13-45d0-89e1-7a644fc28316/image.jpg" />
+								<div className="detail_map_desc">
+									<p>{data?.address?.split(" ")[0]} {data?.address?.split(" ")[1]}</p>
+									<span>{data?.address}</span>
+								</div>
+							</div>
 						</div>
-					</div>
-				</div>
+					)
+				}
 			</div>
 			<div
 				style={{
@@ -229,11 +242,32 @@ const Detail = () => {
 					zIndex: 2,
 				}}
 			>
-				<div className="Detail_join_create">
-					<button type="button" className="btn_like">
-						<IoHeartCircleSharp className="mr-4" size={56} color="#e1483c" />
-					</button>
-					<Button type="button">참여하기</Button>
+				<div className="Detail_join_create" style={{gap: '10px'}}>
+					{
+						data?.participate === false
+						?
+						(<Button type="button" onClick={()=>{navigate(`/join/${id}`)}}>참여하기</Button>)
+						:
+						members?.owner?.memberId === userState?.id
+						?
+						(
+							<>
+								{
+									members?.members?.length > 0 && (
+										<button type="button" className="btn_like" onClick={()=>navigate(`/manage/${id}`)}>
+											<IoSettingsSharp className="mr-4" size={40} color="#e1483c" />
+										</button>
+									)
+								}
+								<Button className="type_2" type="button" onClick={()=>{navigate(`/edit/${id}/step_1`)}}>수정하기</Button>
+							</>
+						)
+						:
+						(
+							<Button className="type_2" type="button" onClick={()=>{navigate(`/join/${id}`)}}>참여 취소하기</Button>
+						)
+					}
+					
 				</div>
 			</div>
 		</div>
@@ -251,7 +285,11 @@ const Button = styled.button`
 	font-size: 15px;
 	text-align: center;
 	font-weight: 500;
-	:disabled {
+	&.type_2{
+		background-color: #F8D7D6;
+		color: #E1483C;
+	}
+	&:disabled {
 		background-color: #d9d9d9;
 		color: #989696;
 	}

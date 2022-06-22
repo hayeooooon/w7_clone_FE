@@ -11,13 +11,15 @@ export const apis = {
   getCategory: () => api.get('/api/categories'),
   loadSocialings: (tab) => api.get(`/api/categories/${tab}/socials?page=0&size=5`),
   createSocialing: (category, formdata, config) => api.post(`/api/categories/${category}/socials`, formdata, config),
-  loadMembers: (id, approved) => api.get(`/api/socials/${id}/members?approved=1`),
+  loadMembers: (id) => api.get(`/api/socials/${id}/members?approved=1`),
   loadDetail: (id) => api.get(`/api/socials/${id}`),
+  updateSocialing: (cid, sid, formdata, config) => api.patch(`/api/categories/${cid}/socials/${sid}`, formdata, config),
+  updateAnswer: (id, answer) => api.post(`/api/socials/${id}/participation`, answer),
 
   // user
   signIn: (info) => api.post('/api/login', info),
   signUp: (formdata, config) => api.post('/api/signup', formdata, config),
-
+  userInfo: () => api.get('/api/authentication'),
 
 };
 

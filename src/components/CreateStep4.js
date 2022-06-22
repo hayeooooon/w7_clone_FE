@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 
@@ -11,10 +11,13 @@ const CreateStep4 = ({
 	setAddress,
 	popupIsVisible,
 	setPopupIsVisible,
-	setData
+	setData,
+	page,
+	members
 }) => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const param = useParams().id;
 	useEffect(() => {
 		setStep(4);
 
@@ -32,6 +35,7 @@ const CreateStep4 = ({
 			setActivateButton(true);
 		}
 	}, [meetingType, address]);
+	console.log(members?.members.length,'members')
 
 	return (
 		<>
@@ -111,10 +115,17 @@ const CreateStep4 = ({
 					type="button"
 					disabled={activateButton ? false : true}
 					onClick={() => {
-						sessionStorage.setItem('meetingType', meetingTypeRadio[meetingType])
-						sessionStorage.setItem('address', address)
-						navigate("/create/step_5");
-						setStep(5);
+						if(page === 'edit'){
+								sessionStorage.setItem('meetingType', meetingTypeRadio[meetingType])
+								sessionStorage.setItem('address', address)
+								navigate(`/edit/${param}/step_5`);
+								setStep(5);
+						}else{
+							sessionStorage.setItem('meetingType', meetingTypeRadio[meetingType])
+							sessionStorage.setItem('address', address)
+							navigate("/create/step_5");
+							setStep(5);
+						}
 					}}
 				>
 					다음

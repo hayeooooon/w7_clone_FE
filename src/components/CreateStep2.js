@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 import TextInput from './TextInput';
 
-const CreateStep2 = ({setStep, setData}) => {
+const CreateStep2 = ({setStep, setData, page}) => {
   const navigate = useNavigate();
+	const param = useParams().id;
 	const [textValue, setTextValue] = useState("");
 	const nextButton = useRef();
 
@@ -37,7 +38,7 @@ const CreateStep2 = ({setStep, setData}) => {
 					ref={nextButton}
 					onClick={() => {
 						sessionStorage.setItem('title', textValue);
-						navigate("/create/step_3");
+						navigate(page !== 'edit' ? '/create/step_3' : `/edit/${param}/step_3`);
 						setStep(3);
 					}}
 				>

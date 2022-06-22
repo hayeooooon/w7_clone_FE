@@ -3,6 +3,7 @@ import { apis } from '../../api/index';
 
 // action
 const SIGNUP = "user/SIGNUP";
+const LOAD = "user/LOAD";
 
 // initial state
 const initialState = {
@@ -13,6 +14,9 @@ const initialState = {
 export const signUp = () => {
   return {type: SIGNUP}
 }
+export const loadUserInfo = (info) => {
+  return {type: LOAD, info}
+}
 
 // middlewares
 export const signUpAxios = (formdata) => {
@@ -22,7 +26,6 @@ export const signUpAxios = (formdata) => {
         "Content-Type": "multipart/form-data",
       },
     };
-    console.log(formdata.get('profileImageFile'), typeof formdata.get('profileImageFile'))
 
     apis.signUp(formdata, config).then(
       res => {
@@ -42,6 +45,9 @@ export const signInAxios = (email, password) => {
     apis.signIn({email, password}).then(
       res => {
         const token = res.data.token;
+        const expiry = res.data.expiresAt;
+        const validTo = Date.now() + expiry;
+        sessionStorage.setItem('validTo', validTo)
         sessionStorage.setItem('token', token);
         window.location.href = '/';
       }
@@ -53,6 +59,22 @@ export const signInAxios = (email, password) => {
   }
 }
 
+export const loadUserInfoAxios = () => {
+  return async (dispatch) => {
+    apis.userInfo().then(
+      res => {
+        console.log(res);
+        const user_info = res.data.principal.member;
+        dispatch(loadUserInfo(user_info))
+      }
+    ).catch(
+      err => {
+        console.log(err);
+      }
+    )
+  }
+}
+
 
 
 // reducer
@@ -61,6 +83,8 @@ export default function reducer(state = initialState, action = {}){
     case "user/SIGNUP":
       console.log('signup!!!');
       return state;
+    case "user/LOAD":
+      return {user: [action.info]};
     default:
       return state;
   }

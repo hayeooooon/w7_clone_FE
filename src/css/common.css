@@ -14,9 +14,35 @@ body {
 }
 .section_title {
   line-height: 1.2;
-
   font-size: 20px;
   font-weight: 500;
+}
+.section_title.v2{
+  line-height: 1.5;
+}
+.notice_list li{
+  display: flex;
+  font-size: 16px;
+  line-height: 1.5;
+  align-items: flex-start;
+  gap: 8px;
+}
+.notice_list li + li{
+  margin-top: 20px;
+}
+.notice_list li span{
+  display: inline-block;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #F8D7D6;
+  font-size: 12px;
+  line-height: 20px;
+  color: #E1483C;
+  text-align: center;
+  font-weight: 500;
+  margin-top: 4px;
 }
 a {
   text-decoration: none;

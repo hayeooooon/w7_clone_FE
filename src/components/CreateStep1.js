@@ -1,13 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 import {loadCategoryAxios} from '../redux/moduels/socialing';
 
-const CreateStep1 = ({setStep, setData}) => {
+const CreateStep1 = ({setStep, setData, page}) => {
 	const dispatch = useDispatch();
   const navigate = useNavigate()
+	const param = useParams().id;
   const nextButton = useRef();
 	const [checkedCategory, setCheckedCategory] = useState(null);
 	const categoryStates = useSelector((state)=>state.socialing.category);
@@ -18,7 +19,7 @@ const CreateStep1 = ({setStep, setData}) => {
 			setCategory(categoryStates);
 		}
 	},[categoryStates])
-	
+
 	const colors = [
 		"#2e5986",
 		"#6FC4E3",
@@ -31,6 +32,19 @@ const CreateStep1 = ({setStep, setData}) => {
 	useEffect(()=>{
 		setStep(1);
 		dispatch(loadCategoryAxios());
+		sessionStorage.removeItem('title');
+		sessionStorage.removeItem('content');
+		sessionStorage.removeItem('imageFile');
+		sessionStorage.removeItem('startDate');
+		sessionStorage.removeItem('startTime');
+		sessionStorage.removeItem('meetingType');
+		sessionStorage.removeItem('address');
+		sessionStorage.removeItem('recruitmentType');
+		sessionStorage.removeItem('question');
+		sessionStorage.removeItem('limitHeadcount');
+		sessionStorage.removeItem('entryFee');
+		sessionStorage.removeItem('entryFeeInfo');
+		sessionStorage.removeItem('category');
 	},[]);
   
 	return (
@@ -84,7 +98,7 @@ const CreateStep1 = ({setStep, setData}) => {
 			>
 				<Button type="button" disabled={checkedCategory !== null ? false : true} ref={nextButton} onClick={()=>{
 					sessionStorage.setItem('category', checkedCategory);
-					navigate('/create/step_2');
+					navigate(page !== 'edit' ? '/create/step_2' : `/edit/${param}/step_2`);
 					setStep(2);
 				}}>다음</Button>
 			</div>

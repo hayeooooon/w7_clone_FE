@@ -1,12 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 
-const CreateStep6 = ({ setStep, setData }) => {
+const CreateStep6 = ({ setStep, setData, page, members }) => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const nextButton = useRef();
+	const param = useParams().id;
 	const [participants, setParticipants] = useState(3);
 	useEffect(() => {
 		setStep(6);
@@ -120,9 +121,23 @@ const CreateStep6 = ({ setStep, setData }) => {
 					type="button"
 					ref={nextButton}
 					onClick={() => {
-						sessionStorage.setItem('limitHeadcount', participants)
-						navigate("/create/step_7");
-						setStep(7);
+						if(page === 'edit'){
+							if(members?.members.length > 0){
+								sessionStorage.setItem('limitHeadcount', participants)
+								sessionStorage.setItem('entryFee', '');
+								sessionStorage.setItem('entryFeeInfo', '');
+								navigate(`/edit/${param}/step_8`);
+								setStep(8);
+							}else{
+								sessionStorage.setItem('limitHeadcount', participants)
+								navigate(`/edit/${param}/step_7`);
+								setStep(7);
+							}
+						}else{
+							sessionStorage.setItem('limitHeadcount', participants)
+							navigate("/create/step_7");
+							setStep(7);
+						}
 					}}
 				>
 					다음

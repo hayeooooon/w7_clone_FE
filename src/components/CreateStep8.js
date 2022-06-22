@@ -1,17 +1,19 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { createSocialingAxios } from '../redux/moduels/socialing';
+import { createSocialingAxios, editSocialingAxios } from '../redux/moduels/socialing';
 
 import ic_image from '../images/ic_image.png'
 
-const CreateStep8 = ({setStep, setData}) => {
+const CreateStep8 = ({setStep, setData, page}) => {
   const navigate = useNavigate()
 	const dispatch = useDispatch();
+	const param = useParams().id;
 	const fileInput = useRef();
 	const preview = useRef();
 	const textarea = useRef();
+	const [btnDisabled, setBtnDisabled] = useState(true);
 	const [file, setFile] = useState();
 	const [fileData, setFileData] = useState();
 
@@ -19,7 +21,12 @@ const CreateStep8 = ({setStep, setData}) => {
 		setStep(8);
 	},[]);
 
-	const createSocialing = () => {
+	useEffect(()=>{
+		if(file) setBtnDisabled(false);
+		else setBtnDisabled(true);
+	}, [file])
+
+	const createSocialing = (create) => {
 		const formdata = new FormData();
 		formdata.append('title', sessionStorage.getItem('title'));
 		formdata.append('content', sessionStorage.getItem('content'));
@@ -33,8 +40,16 @@ const CreateStep8 = ({setStep, setData}) => {
 		formdata.append('limitHeadcount', sessionStorage.getItem('limitHeadcount'));
 		formdata.append('entryFee', sessionStorage.getItem('entryFee'));
 		formdata.append('entryFeeInfo', sessionStorage.getItem('entryFeeInfo'));
+		if(page === 'edit') formdata.append('categoryId', sessionStorage.getItem('category'));
 		const category = sessionStorage.getItem('category');
-		dispatch(createSocialingAxios(category, formdata))
+		if(create){
+			console.log('create', formdata)
+			dispatch(createSocialingAxios(category, formdata))
+		}else{
+			console.log('edit', formdata, typeof formdata)
+			dispatch(editSocialingAxios(category, param, formdata))
+		}
+		
 	}
 	const uploadImg = (e) => {
 		e.preventDefault();
@@ -84,11 +99,19 @@ const CreateStep8 = ({setStep, setData}) => {
 						"linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.5) 100%)",
 				}}
 			>
-				<Button type="button" onClick={()=>{
-					if(file !== undefined) sessionStorage.setItem('imageFile', file);
-					if(textarea.current?.value !== undefined && textarea.current?.value.trim().length > 0) sessionStorage.setItem('content', textarea.current.value);
-					createSocialing();
-				}}>다음</Button>
+				<Button type="button" 
+					disabled={btnDisabled}
+					onClick={()=>{
+						if(file !== undefined) sessionStorage.setItem('imageFile', file);
+						else sessionStorage.setItem('imageFile', '');
+						if(textarea.current?.value !== undefined && textarea.current?.value.trim().length > 0) sessionStorage.setItem('content', textarea.current.value);
+						else sessionStorage.setItem('content', '');
+						if(page === 'edit'){
+							createSocialing(false);
+						}else{
+							createSocialing(true);
+						}
+					}}>다음</Button>
 			</div>
 		</>
 	);

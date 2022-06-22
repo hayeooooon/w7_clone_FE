@@ -43,7 +43,7 @@ const SocialingList = ({ socialings }) => {
 		if(data?.length > 0){
 			console.log('있음');
 			data.map((v,i)=>{
-				dispatch(loadMembersAxios(v.id, v.meetingType === 'approved' ? 1 : 0));
+				dispatch(loadMembersAxios(v.id, 'list'));
 				setTimeFormat(v.startTime, i);
 				setDateFormat(v.startDate, i);
 			})
@@ -157,7 +157,7 @@ const SocialingItem = styled.li`
 			font-size: 12px;
 			color: #989696;
 			line-height: 1;
-			padding: 10px 0 16px;
+			padding: 10px 0 6px;
 			font-weight: 500;
 			& > svg{
 				flex-shrink: 0;

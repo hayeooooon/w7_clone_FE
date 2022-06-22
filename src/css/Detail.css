@@ -107,7 +107,7 @@
 .detail_body{
   position: relative;
   padding-top: 20px;
-  padding-bottom: 80px;
+  padding-bottom: 140px;
   z-index: 1;
 }
 .Detail_line {
@@ -150,6 +150,9 @@
 .member_list {
   display: flex;
   align-items: center;
+}
+.member_list+.member_list{
+  margin-top: 12px;
 }
 .Detail_member_profile {
   width: 60px;
@@ -198,7 +201,7 @@
   margin-left: 10px;
 }
 .detail_map {
-  padding: 14px 12px 40px;
+  padding: 14px 12px 0;
 }
 .detail_map_inner{
 

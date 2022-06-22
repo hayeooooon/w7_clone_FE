@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 
@@ -7,10 +7,11 @@ import TextInput from "./TextInput";
 import ic_fee from "../images/ic_detail_fee.png";
 import ic_fee_info from "../images/ic_fee_info.png";
 
-const CreateStep7 = ({ setStep, setData }) => {
+const CreateStep7 = ({ setStep, setData, page }) => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const nextButton = useRef();
+	const param = useParams().id;
 	const [entryFee, setEntryFee] = useState(null);
 	const [feeValue, setFeeValue] = useState();
 	const [feeInfo, setFeeInfo] = useState();
@@ -191,9 +192,8 @@ const CreateStep7 = ({ setStep, setData }) => {
 					onClick={() => {
 						sessionStorage.setItem('entryFee', feeData);
 						sessionStorage.setItem('entryFeeInfo', feeInfo);
-						navigate("/create/step_8");
+						navigate(page !== 'edit' ? '/create/step_8' : `/edit/${param}/step_8`);
 						setStep(8);
-						// dispatch()
 					}}
 				>
 					등록하기

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import TimePicker from "rc-time-picker";
 import DatePicker from "react-datepicker";
@@ -10,12 +10,12 @@ import format from "date-fns/format";
 import addMonths from "date-fns/addMonths";
 import { useDispatch } from "react-redux";
 
-const CreateStep3 = ({ setStep, setData }) => {
+const CreateStep3 = ({ setStep, setData, page, members }) => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const param = useParams().id;
 	useEffect(() => {
 		setStep(3);
-
 	}, []);
 	const [time, setTime] = useState("06:00 PM");
 	var _date = new Date();
@@ -67,7 +67,7 @@ const CreateStep3 = ({ setStep, setData }) => {
 	const [dateData, setDateData] = useState();
 	useEffect(()=>{
 		const _year = startDate.getFullYear();
-		const _month = startDate.getMonth() < 10 ? '0' + startDate.getMonth() : startDate.getMonth();
+		const _month = (startDate.getMonth()+1) < 10 ? '0' + startDate.getMonth() : startDate.getMonth();
 		const _day = startDate.getDate() < 10 ? '0' + startDate.getDate() : startDate.getDate();
 		setDateData(`${_year}-${_month}-${_day}`);
 	},[startDate])
@@ -148,10 +148,28 @@ const CreateStep3 = ({ setStep, setData }) => {
 					type="button"
 					disabled=""
 					onClick={() => {
-						sessionStorage.setItem('startDate', dateData);
-						sessionStorage.setItem('startTime', timeData);
-						navigate("/create/step_4");
-						setStep(4);
+						if(page === 'edit'){
+							if(members?.members.length > 0){
+								sessionStorage.setItem('startDate', dateData);
+								sessionStorage.setItem('startTime', timeData);
+								sessionStorage.setItem('meetingType', '')
+								sessionStorage.setItem('address', '')
+								sessionStorage.setItem('recruitmentType', '');
+								sessionStorage.setItem('question', '');
+								navigate(`/edit/${param}/step_6`);
+								setStep(6);
+							}else{
+								sessionStorage.setItem('startDate', dateData);
+								sessionStorage.setItem('startTime', timeData);
+								navigate(`/edit/${param}/step_4`);
+								setStep(4);
+							}
+						}else{
+							sessionStorage.setItem('startDate', dateData);
+							sessionStorage.setItem('startTime', timeData);
+							navigate("/create/step_4");
+							setStep(4);
+						}
 					}}
 				>
 					다음
