@@ -33,7 +33,7 @@ const Regiprofile = ({ setData }) => {
         </ul>
       </div>
       <div className="regi_btn">
-        <button onClick={handleUpload}>다음</button>
+        <button>다음</button>
       </div>
     </div>
   );

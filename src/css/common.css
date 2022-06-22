@@ -1,4 +1,4 @@
-/* @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap");
 .App {
   text-align: unset;
 }
@@ -111,6 +111,7 @@ textarea {
   border: 1px solid #dbdbdb;
   box-sizing: border-box;
   font-family: "Noto Sans KR", sans-serif;
+  resize: noneç;
 }
 
 textarea::placeholder {
@@ -125,6 +126,22 @@ textarea::placeholder {
 .popup_body .info_body {
   padding: 0;
 }
+
+.no_result{
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  border: #eee;
+  font-size: 14px;
+  color: #868585;
+}
+.no_result.no_box{
+  background-color: transparent;
+  padding: 0;
+  border: none;
+}
+
 
 /* timepicker */
 .rc-time-picker{
@@ -235,6 +252,22 @@ textarea::placeholder {
 }
 .input_area.time{
   min-height: 250px;
+}
+.input_area > .label{
+  font-size: 15px;
+  line-height: 1.2;
+  font-weight: 500;
+  padding-left: 10px;
+  margin-bottom: 8px;
+}
+.input_area+.input_area{
+  margin-top: 20px;
+}
+.txt_err{
+  font-size: 14px;
+  line-height: 1.3;
+  color: #E1483C;
+  margin-top: 4px;
 }
 .react-datepicker{
   border: none!important;

@@ -60,7 +60,6 @@ const MainSlider = () => {
 			idx++;
 			if (idx > length + 1) idx = 2; // 첫버째 슬라이드(마지막 슬라이드 복제본)일 경우
 			if (idx === length + 1) {
-				console.log(idx, length + 1, "?");
 				setTimeout(() => {
 					slidersRef.current.setAttribute(
 						"style",
@@ -94,7 +93,6 @@ const MainSlider = () => {
 			sliderArr.push(sliderNodes[i]);
 		}
 		// intervalTime 마다 showNextSlide 함수 실행
-		console.log('set')
 		initIntervalEvent = setInterval(showNextSlide, intervalTime, sliderArr, sliderWidth, false);
 		slidersRef.current.addEventListener("touchstart", (e) => {
 			touchStart = e.touches[0].pageX;

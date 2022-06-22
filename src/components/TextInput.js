@@ -1,20 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, forwardRef } from "react";
 import styled from "styled-components";
 
-const TextInput = ({ placeholder, maxLength, setTextValue, type, hideLength }) => {
+const TextInput = ({ placeholder, maxLength, setTextValue, st, hideLength, fieldType, emailRef }, ref) => {
 	const [inputValue, setInputValue] = useState();
 	useEffect(() => {
 		setTextValue && setTextValue(inputValue);
 	}, [inputValue]);
 	return (
 		<>
-			<InputArea className={`input_area ${type && "type_box"}`}>
+			<InputArea className={`input_area ${st && "type_box"}`}>
 				<input
-					type="text"
+					type={fieldType ? fieldType : 'text'}
 					placeholder={placeholder}
 					maxLength={maxLength}
 					style={{ fontSize: "15px", color: "#222" }}
 					onInput={(e) => setInputValue(e.target.value)}
+					ref={ref && ref}
 				/>
 			</InputArea>
 			{
@@ -54,4 +55,4 @@ const InputArea = styled.div`
 		}
 	}
 `;
-export default TextInput;
+export default forwardRef(TextInput);

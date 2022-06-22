@@ -13,6 +13,7 @@ const CreateStep2 = ({setStep, setData}) => {
 		setStep(2);
 	},[]);
 
+
 	return (
 		<>
 			<h3 className="section_title" style={{ padding: "20px 0 28px" }}>
@@ -35,6 +36,7 @@ const CreateStep2 = ({setStep, setData}) => {
 					disabled={textValue?.trim().length >= 5 ? false : true}
 					ref={nextButton}
 					onClick={() => {
+						sessionStorage.setItem('title', textValue);
 						navigate("/create/step_3");
 						setStep(3);
 					}}

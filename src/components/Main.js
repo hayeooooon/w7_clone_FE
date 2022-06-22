@@ -1,36 +1,55 @@
 import "../css/common.css";
-import React from "react";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {useDispatch, useSelector} from 'react-redux';
+
+import {apis} from '../api/index';
+import {loadCategoryAxios, loadSocialingsAxios} from '../redux/moduels/socialing';
 
 import MainCategory from "./MainCategory";
 import MainSlider from "./MainSlider";
 import SocialingList from "./SocialingList";
 
 const Main = () => {
+	const dispatch = useDispatch();
+	const [category, setCategory] = useState(0);
+	const categoryStates = useSelector((state)=>state.socialing.category);
+	const socialings = useSelector((state)=>state.socialing.list);
+	const [tab, setTab] = useState(1);
+
+	console.log(tab, socialings)
+	useEffect(()=>{
+		// socialing 리스트 로드
+		const loadSocialings = async() => {
+			try{
+				let category_load = await apis.getCategory();
+				if(category_load.data){
+					dispatch(loadSocialingsAxios(tab));
+				}
+			}catch(err){
+				console.log(err, 'catch')
+			}finally{
+			}
+		}
+		loadSocialings();
+		// 카테고리 리스트 로드
+		dispatch(loadCategoryAxios());
+	},[])
+
+	useEffect(()=>{
+		dispatch(loadSocialingsAxios(tab));
+	},[tab]);
+
+
 	return (
 		<>
-			<header>
-				<div className="set_inner">
-					<H1>
-						<Link to="/">MUNTO</Link>
-					</H1>
-				</div>
-			</header>
 			<div className="container" style={{minHeight: '100vh',backgroundColor: '#F4F4F4'}}>
-				<MainCategory></MainCategory>
+				<MainCategory categories={categoryStates} setTab={setTab}></MainCategory>
 				<MainSlider></MainSlider>
-        <SocialingList stlyle={{backgroundColor: '#F4F4F4'}}></SocialingList>
+        <SocialingList stlyle={{backgroundColor: '#F4F4F4'}} socialings={socialings}></SocialingList>
 			</div>
 		</>
 	);
 };
 
-const H1 = styled.h1`
-	font-size: 30px;
-	color: #e1483c;
-	letter-spacing: 0.05em;
-	line-height: 50px;
-`;
 
 export default Main;

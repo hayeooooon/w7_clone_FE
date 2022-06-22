@@ -1,98 +1,114 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useDispatch } from "react-redux";
 
-import ic_location from "../images/ic_location.png";
+import ic_detail_order from "../images/ic_detail_order.png";
+import ic_detail_order_active from "../images/ic_detail_order_active.png";
+import ic_detail_approval from "../images/ic_detail_approval.png";
+import ic_detail_approval_active from "../images/ic_detail_approval_active.png";
+import TextInput from "./TextInput";
 
-const CreateStep5 = ({
-	setStep,
-	address,
-	setAddress,
-	popupIsVisible,
-	setPopupIsVisible,
-	setData
-}) => {
+const CreateStep5 = ({ setStep, setData }) => {
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const [recruitment, setRecruitment] = useState([]);
+	const [btnDisabled, setBtnDisabled] = useState(true);
+	const [textValue, setTextValue] = useState();
+	const nextButton = useRef();
 	useEffect(() => {
 		setStep(5);
 	}, []);
-	const radioRef = useRef(null);
-	const meetingTypeRadio = ["offline", "online"];
-	const [meetingType, setMeetingType] = useState(null);
-	const [activateButton, setActivateButton] = useState(false);
-	useEffect(() => {
-		setActivateButton(false);
-		if (meetingTypeRadio[meetingType] === "online") {
-			setActivateButton(true);
-			setAddress("");
-		} else if (meetingTypeRadio[meetingType] === "offline" && address !== "") {
-			setActivateButton(true);
-		}
-	}, [meetingType, address]);
 
+	useEffect(() => {
+		setBtnDisabled(true);
+		if (recruitment === "early bird") {
+			setBtnDisabled(false);
+		} else if (recruitment === "approved" && textValue?.trim().length >= 10) {
+			setBtnDisabled(false);
+		}
+	}, [textValue, recruitment]);
 	return (
 		<>
 			<h3 className="section_title" style={{ padding: "20px 0 28px" }}>
-				어디서 만날까요?
+				어떻게 멤버를 모집할까요?
 			</h3>
 			<div className="input_area">
-				<ul style={{ display: "flex", gap: "8px" }}>
-					{meetingTypeRadio.map((v, i) => {
-						return (
-							<li
-								key={i}
-								style={{
-									flexBasis: "50%",
-								}}
-							>
-								<label
-									style={{
-										display: "block",
-										height: "50px",
-										lineHeight: "46px",
-										border: `1px solid ${
-											meetingType === i ? "#E1483C" : "#DBDBDB"
-										}`,
-										backgroundColor: `${
-											meetingType === i ? "#E1483C" : "transparent"
-										}`,
-										color: `${meetingType === i ? "#fff" : "#222"}`,
-										borderRadius: "6px",
-										textAlign: "center",
-										boxSizing: 'border-box',
-									}}
-								>
-									<input
-										type="radio"
-										name="meetingType"
-										value={v}
-										checked={meetingType === i}
-										onChange={() => setMeetingType(i)}
-									/>
-									{v === "offline" ? "오프라인" : "온라인"}
-								</label>
-							</li>
-						);
-					})}
-				</ul>
+				<RadioBox className="input_box">
+					<label className={recruitment === "early bird" ? "is_active" : ""}>
+						<input
+							type="radio"
+							name="recruitmentType"
+							value="early bird"
+							onChange={(e) => setRecruitment(e.target.value)}
+						/>
+						<span
+							style={{
+								backgroundImage: `url(${
+									recruitment === "early bird"
+										? ic_detail_order_active
+										: ic_detail_order
+								})`,
+							}}
+						></span>
+						<dl>
+							<dt>선착순</dt>
+							<dd>
+								멤버들의 신청과 동시에 참여가 완료돼요. <br />
+								누구나 참여할 수 있어서 신쳥률이 높아요.
+							</dd>
+						</dl>
+					</label>
+				</RadioBox>
+				<RadioBox className="input_box">
+					<label className={recruitment === "approved" ? "is_active" : ""}>
+						<input
+							type="radio"
+							name="recruitmentType"
+							value="approved"
+							onChange={(e) => setRecruitment(e.target.value)}
+						/>
+						<span
+							style={{
+								backgroundImage: `url(${
+									recruitment === "approved"
+										? ic_detail_approval_active
+										: ic_detail_approval
+								})`,
+							}}
+						></span>
+						<dl>
+							<dt>승인제</dt>
+							<dd>
+								호스트가 멤버를 수락하거나 거절할 수 있어요. <br />
+								질문을 작성하고 멤버들의 답변을 통해
+								<br />
+								취향이 통하는 사람들과 만날 수 있어요.
+							</dd>
+						</dl>
+					</label>
+				</RadioBox>
 			</div>
-			{meetingTypeRadio[meetingType] === "offline" && (
-				<div className="address_area" style={{ marginTop: "10px" }}>
+			{recruitment === "approved" && (
+				<div>
 					<p
-						onClick={() => setPopupIsVisible(true)}
 						style={{
-							background: `url(${ic_location}) left center / 28px 45px no-repeat`,
-							height: "45px",
-							lineHeight: "44px",
-							borderBottom: "1px solid #d9d9d9",
-							paddingLeft: "28px",
-							color: address !== "" ? "#222" : "#989696",
+							fontSize: "16px",
+							fontWeight: "500",
+							lineHeight: "1.3",
+							margin: "30px 0 15px",
 						}}
 					>
-						{address ? address : "장소를 입력해주세요."}
+						멤버들의 소셜링 신청을 위한 질문을 작성해주세요.
 					</p>
+					<TextInput
+						placeholder="예시) 어떤 관심사를 갖고 계신가요?"
+						maxLength="80"
+						setTextValue={setTextValue}
+					/>
 				</div>
 			)}
+
 			<div
 				style={{
 					position: "fixed",
@@ -106,8 +122,11 @@ const CreateStep5 = ({
 			>
 				<Button
 					type="button"
-					disabled={activateButton ? false : true}
+					ref={nextButton}
+					disabled={btnDisabled}
 					onClick={() => {
+						sessionStorage.setItem('recruitmentType', recruitment);
+						sessionStorage.setItem('question', textValue);
 						navigate("/create/step_6");
 						setStep(6);
 					}}
@@ -119,30 +138,51 @@ const CreateStep5 = ({
 	);
 };
 
-const ImageFile = styled.label`
-	display: block;
-	width: 100%;
-	input[type="file"] + div {
-		height: 82px;
+const RadioBox = styled.div`
+	font-size: 15px;
+	label {
+		width: 100%;
 		display: flex;
-		flex-direction: column;
-		justify-content: center;
+		flex-direction: row;
+		gap: 14px;
 		align-items: center;
-		background-color: #f4f4f4;
-		border: 1px solid #dbdbdb;
+		padding: 18px;
+		border: 1px solid #d9d9d9;
 		border-radius: 6px;
 		box-sizing: border-box;
-		background-size: cover;
-		background-repeat: no-repeat;
-		background-position: center;
-		&.has_image {
-			img,
-			p {
-				display: none;
+		&.is_active {
+			border-color: #e1483c;
+			background-color: #e1483c;
+			dt,
+			dd {
+				color: #fff;
 			}
 		}
+		input {
+			flex: none;
+		}
+		span {
+			display: inline-block;
+			width: 20px;
+			height: 20px;
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: 20px;
+		}
+		dt {
+			margin-bottom: 4px;
+			font-weight: 500;
+		}
+		dd {
+			color: #989696;
+			line-height: 1.5;
+		}
+	}
+	& + .input_box {
+		margin-top: 12px;
 	}
 `;
+
 const Button = styled.button`
 	display: block;
 	width: 100%;
