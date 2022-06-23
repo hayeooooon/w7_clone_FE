@@ -53,10 +53,11 @@ const CreateStep1 = ({setStep, setData, page, editState}) => {
 			if(sessionStorage.getItem('category')){
 				setCheckedCategory(sessionStorage.getItem('category'))
 			}else{
-				setCheckedCategory(editState.categoryId)
+				setCheckedCategory(editState?.categoryId)
 			}
 		}
 	},[editState?.categoryId])
+	console.log(editState?.categoryId)
 
 	return (
 		<>

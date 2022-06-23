@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {loadMembersAxios} from "../redux/moduels/socialing";
-import { MdLocationOn } from "react-icons/md";
+import { MdLocationOn, MdOutlineEdgesensorLow } from "react-icons/md";
 
 import img_1 from "../images/img_slider_1.jpeg";
 import img_2 from "../images/img_slider_2.jpeg";
@@ -56,7 +56,6 @@ const SocialingList = ({ socialings, tab }) => {
 			setMembers(membersState);
 		}
 	}, [membersState])
-
 	return (
 		<div style={{ padding: "22px 12px 40px" }}>
 			<h3 className="section_title" style={{ paddingBottom: "13px" }}>
@@ -77,8 +76,21 @@ const SocialingList = ({ socialings, tab }) => {
 									<div className="info_area">
 										<p className="info_title">{v.title}</p>
 										<p className="info_date">
-										<MdLocationOn size={14}/>
-											<span>{v.address.split(' ')[0]} · </span>
+										
+										{
+											v.meetingType === 'offline'
+											?
+											<>
+												<MdLocationOn size={14}/>
+												<span>{v.address.split(' ')[0]} · </span>
+											</>
+											:
+											<>
+												<MdOutlineEdgesensorLow size={14}/>
+												<span>온라인 · </span>
+
+											</>
+										}
 											<span>{ v.startDate}</span>
 											<span>{ v.startTime}</span>
 										</p>

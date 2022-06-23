@@ -24,16 +24,16 @@ const CreateStep3 = ({ setStep, setData, page, members, editState }) => {
 	const minutes = "00";
 	var date = moment(next_week).set("hour", hours).set("minute", minutes);
 	const [startDate, setStartDate] = useState(next_week);
-	const [headerDate, setHeaderDate] = useState(
-		`${startDate.getFullYear()}년 ${startDate.getMonth()}월`
-	);
+	const [headerDate, setHeaderDate] = useState();
 	const days = ["일", "월", "화", "수", "목", "금", "토"];
 	const [day, setDay] = useState(days[startDate.getDay()]);
 	const [isOpen, setIsOpen] = useState(false);
 	const handleChange = (e) => {
 		setIsOpen(!isOpen);
+		console.log(e)
 		setStartDate(e);
 	};
+	console.log(startDate)
 	const handleClick = (e) => {
 		e.preventDefault();
 		setIsOpen(!isOpen);
@@ -67,7 +67,7 @@ const CreateStep3 = ({ setStep, setData, page, members, editState }) => {
 	const [dateData, setDateData] = useState();
 	useEffect(()=>{
 		const _year = startDate.getFullYear();
-		const _month = (startDate.getMonth()+1) < 10 ? '0' + startDate.getMonth() : startDate.getMonth();
+		const _month = (startDate.getMonth()+1) < 10 ? ('0' + (parseInt(startDate.getMonth())+1) ): parseInt(startDate.getMonth())+1;
 		const _day = startDate.getDate() < 10 ? '0' + startDate.getDate() : startDate.getDate();
 		setDateData(`${_year}-${_month}-${_day}`);
 	},[startDate])
@@ -96,14 +96,32 @@ const CreateStep3 = ({ setStep, setData, page, members, editState }) => {
 								<div>
 									<CalendarButton
 										className="prev"
-										onClick={decreaseMonth}
+										onClick={()=>{
+											decreaseMonth();
+											setHeaderDate((prev)=>{
+												const _year = prev.split(' ')[0];
+												const _month = prev.split(' ')[1].split('월')[0];
+												let month = parseInt(_month)-1;
+												let result = `${_year} ${month}월`
+												return result;
+											})
+										}}
 										disabled={prevMonthButtonDisabled}
 									>
 										{"<"}
 									</CalendarButton>
 									<CalendarButton
 										className="next"
-										onClick={increaseMonth}
+										onClick={()=>{
+											increaseMonth();
+											setHeaderDate((prev)=>{
+												const _year = prev.split(' ')[0];
+												const _month = prev.split(' ')[1].split('월')[0];
+												const month = parseInt(_month)+1;
+												const result = `${_year} ${month}월`
+												return result;
+											})
+										}}
 										disabled={nextMonthButtonDisabled}
 									>
 										{">"}

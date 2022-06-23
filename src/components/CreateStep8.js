@@ -83,6 +83,8 @@ const CreateStep8 = ({ setStep, setData, page, editState }) => {
 		}
 	}, [editState?.content]);
 
+	console.log(editState)
+
 	return (
 		<>
 			<h3 className="section_title" style={{ padding: "20px 0 28px" }}>
@@ -91,7 +93,7 @@ const CreateStep8 = ({ setStep, setData, page, editState }) => {
 			<div className="input_area">
 				<ImageFile>
 					<input type="file" ref={fileInput} onChange={uploadImg} />
-					<div ref={preview}>
+					<div ref={preview}  style={{backgroundImage: `url(${page === 'edit' && editState?.socialImageUrl})`}} className={(page === 'edit' && editState?.socialImageUrl) ? 'has_image' : ''}>
 						<img src={ic_image} alt="image" style={{ width: "23px" }} />
 						<p
 							style={{ color: "#989696", fontSize: "13px", fontWeight: "500" }}
@@ -143,7 +145,7 @@ const CreateStep8 = ({ setStep, setData, page, editState }) => {
 						}
 					}}
 				>
-					다음
+					{page === 'edit' ? '수정하기' : '등록하기'}
 				</Button>
 			</div>
 		</>
