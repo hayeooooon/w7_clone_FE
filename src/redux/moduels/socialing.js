@@ -270,7 +270,7 @@ export const refuseMemberAxios = (sid, mid) => {
 export const updateAnswerAxios = (id, answer) => {
 	return async (dispatch) => {
 		apis
-			.updateAnswer(id, { answer: answer })
+			.updateAnswer(id, { answer })
 			.then((res) => {
 				console.log(res);
 				window.location.href = "/completed";

@@ -25,7 +25,6 @@ const RegisterStep1 = ({ setStep }) => {
 		if(inputs[0] !== undefined){
 			for(let i=0; i<inputs.length; i++){
 				if(inputs[i].trim().length <= 0){
-					console.log(i)
 					break;
 				}else if(inputs[i].trim().length > 0 && i === inputs.length-1){
 					setBtnDisabled(false);
@@ -43,7 +42,6 @@ const RegisterStep1 = ({ setStep }) => {
 		for(let i=0; i<inputs.length; i++){	
 			// 빈칸 있을 경우 검사	
 			if(inputs[i]?.trim().length <= 0 || inputs[i] === undefined){
-				console.log('???????')
 				new_error.push(`blank${inputsLabel[i]}`);
 				setError([...new_error]);
 			}else{

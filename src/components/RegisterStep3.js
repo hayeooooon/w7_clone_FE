@@ -126,9 +126,7 @@ const RegisterStep3 = ({ setStep }) => {
                 "Content-Type": "multipart/form-data",
               },
             };
-            console.log(emailVal, nameVal, passwordVal, file)
             dispatch(signUpAxios(formdata))
-						// navigate("/login");
 					}}
 				>
 					다음

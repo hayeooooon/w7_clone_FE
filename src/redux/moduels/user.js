@@ -29,8 +29,8 @@ export const signUpAxios = (formdata) => {
 
     apis.signUp(formdata, config).then(
       res => {
-        // sessionStorage.clear();
-        // window.location.href = '/login';
+        sessionStorage.clear();
+        window.location.href = '/login';
       }
     ).catch(
       err => {
@@ -63,7 +63,7 @@ export const loadUserInfoAxios = () => {
   return async (dispatch) => {
     apis.userInfo().then(
       res => {
-        console.log(res)
+        // console.log(res)
         const user_info = res.data.principal.member;
         dispatch(loadUserInfo(user_info))
       }
@@ -83,7 +83,6 @@ export const loadUserInfoAxios = () => {
 export default function reducer(state = initialState, action = {}){
   switch (action.type) {
     case "user/SIGNUP":
-      console.log('signup!!!');
       return state;
     case "user/LOAD":
       return {user: [action.info]};

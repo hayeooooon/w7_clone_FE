@@ -22,7 +22,6 @@ const Login = () => {
     }else{
       setInvalidEmail(false);
 			dispatch(signInAxios(emailRef.current.value, pwRef.current.value))
-			console.log('ok')
     }
   }
 

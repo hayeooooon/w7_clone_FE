@@ -44,9 +44,6 @@ const CreateStep5 = ({ setStep, setData, page, editState }) => {
 			}
 		}
 	}, [editState?.recruitmentType]);
-
-	console.log(editState)
-
 	return (
 		<>
 			<h3 className="section_title" style={{ padding: "20px 0 28px" }}>

@@ -25,8 +25,6 @@ const JoinQuestion = () => {
 		}
 	}, [data]);
 
-	console.log(membersState)
-
 	return (
 		<div className="content">
 			<div className="set_inner">

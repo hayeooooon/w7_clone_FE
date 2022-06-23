@@ -1,28 +1,38 @@
 import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
 
-import img_1 from "../images/img_slider_1.jpeg";
-import img_2 from "../images/img_slider_2.jpeg";
-import img_3 from "../images/img_slider_3.jpeg";
-import img_4 from "../images/img_slider_4.jpeg";
+import img_1 from "../images/banner_1.JPG";
+import img_2 from "../images/banner_2.JPG";
+import img_3 from "../images/banner_3.JPG";
+import img_4 from "../images/banner_4.JPG";
+import img_5 from "../images/banner_5.JPG";
+import img_6 from "../images/banner_6.JPG";
 
 const MainSlider = () => {
 	const sliders = [
 		{
 			img: img_1,
-			link: "https://www.naver.com/",
+			link: "javascript:;",
 		},
 		{
 			img: img_2,
-			link: "https://github.com/MUNTOcloned/FE",
+			link: "javascript:;",
 		},
 		{
 			img: img_3,
-			link: "https://github.com/MUNTOcloned/BE",
+			link: "javascript:;",
 		},
 		{
 			img: img_4,
-			link: "https://spartacodingclub.kr/",
+			link: "javascript:;",
+		},
+		{
+			img: img_5,
+			link: "javascript:;",
+		},
+		{
+			img: img_6,
+			link: "javascript:;",
 		},
 	];
 	const [current, setCurrent] = useState(1); // 최근 슬라이드 번호
