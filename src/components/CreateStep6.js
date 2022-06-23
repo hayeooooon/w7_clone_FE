@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 
-const CreateStep6 = ({ setStep, setData, page, members }) => {
+const CreateStep6 = ({ setStep, setData, page, members, editState }) => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const nextButton = useRef();
@@ -16,6 +16,16 @@ const CreateStep6 = ({ setStep, setData, page, members }) => {
 			return newData;
 		})
 	}, []);
+
+	useEffect(() => {
+		if(page === 'edit'){
+			if(sessionStorage.getItem('limitHeadcount')){
+				setParticipants(sessionStorage.getItem('limitHeadcount'))
+			}else{
+				setParticipants(editState?.limitHeadcount)
+			}
+		}
+	}, [editState?.limitHeadcount]);
 
 	return (
 		<>
@@ -122,7 +132,7 @@ const CreateStep6 = ({ setStep, setData, page, members }) => {
 					ref={nextButton}
 					onClick={() => {
 						if(page === 'edit'){
-							if(members?.members.length > 0){
+							if(members?.length > 0){
 								sessionStorage.setItem('limitHeadcount', participants)
 								sessionStorage.setItem('entryFee', '');
 								sessionStorage.setItem('entryFeeInfo', '');

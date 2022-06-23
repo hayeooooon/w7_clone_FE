@@ -7,13 +7,13 @@ import TextInput from "./TextInput";
 import ic_fee from "../images/ic_detail_fee.png";
 import ic_fee_info from "../images/ic_fee_info.png";
 
-const CreateStep7 = ({ setStep, setData, page }) => {
+const CreateStep7 = ({ setStep, setData, page, editState }) => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const nextButton = useRef();
 	const param = useParams().id;
 	const [entryFee, setEntryFee] = useState(null);
-	const [feeValue, setFeeValue] = useState();
+	const [feeValue, setFeeValue] = useState('');
 	const [feeInfo, setFeeInfo] = useState();
 	const [btnDisabled, setBtnDisabled] = useState(true);
 	const [feeData, setFeeData] = useState();
@@ -29,17 +29,17 @@ const CreateStep7 = ({ setStep, setData, page }) => {
 	
 	useEffect(() => {
 		setBtnDisabled(true);
-		if (entryFee === 0) {
+		if (entryFee === 0 && page !== 'edit') {
 			setFeeData(0);
 			setFeeInfo('');
+			setFeeValue('');
 			setBtnDisabled(false);
 		}
 		if (
 			entryFee !== 0 &&
-			feeValue?.trim().length > 3 &&
-			feeInfo?.trim().length > 0
+			feeValue?.length > 3 &&
+			feeInfo?.length > 0
 		) {
-			console.log(feeInfo,feeValue)
 			setFeeData(parseInt(feeValue))
 			setFeeInfo(feeInfo);
 			setBtnDisabled(false);
@@ -49,6 +49,20 @@ const CreateStep7 = ({ setStep, setData, page }) => {
 	useEffect(() => {
 		setStep(8);
 	}, []);
+
+	useEffect(() => {
+		if(page === 'edit'){
+			if(sessionStorage.getItem('entryFee')){
+				setEntryFee(sessionStorage.getItem('entryFee') > 0 ? 1 : 0);
+				setFeeValue(sessionStorage.getItem('entryFee'));
+				setFeeInfo(sessionStorage.getItem('entryFeeInfo'));
+			}else{
+				setEntryFee(editState?.entryFee > 0 ? 1 : 0);
+				setFeeValue(editState?.entryFee);
+				setFeeInfo(editState?.entryFeeInfo);
+			}
+		}
+	}, [editState?.entryFee]);
 
 	return (
 		<>
@@ -137,12 +151,17 @@ const CreateStep7 = ({ setStep, setData, page }) => {
 								></em>
 								참가비
 							</p>
-							<TextInput
-								placeholder="참가비를 입력해주세요. (최소 금액 1,000원)"
-								setTextValue={setFeeValue}
-								st="box"
-								hideLength={true}
-							/>
+							<InputArea className="type_box">
+								<input
+									type="number"
+									placeholder="참가비를 입력해주세요. (최소 금액 1,000원)"
+									style={{ fontSize: "15px", color: "#222" }}
+									onInput={(e) => setFeeValue(e.target.value)}
+									value={feeValue}
+									minLength="4"
+									maxLength="7"
+								/>
+							</InputArea>
 						</div>
 						<div style={{ marginTop: "22px" }}>
 							<p
@@ -165,11 +184,16 @@ const CreateStep7 = ({ setStep, setData, page }) => {
 								></em>
 								참가비 정보
 							</p>
-							<TextInput
-								placeholder="참가비에 포함된 사항을 알려주세요."
-								setTextValue={setFeeInfo}
-								hideLength={true}
-							/>
+
+							<InputArea className="type_box">
+								<input
+									type="text"
+									placeholder="참가비에 포함된 사항을 알려주세요."
+									style={{ fontSize: "15px", color: "#222" }}
+									onInput={(e) => setFeeInfo(e.target.value)}
+									value={feeInfo}
+								/>
+							</InputArea>
 						</div>
 					</>
 				)}
@@ -202,6 +226,23 @@ const CreateStep7 = ({ setStep, setData, page }) => {
 		</>
 	);
 };
+
+const InputArea = styled.div`
+	&.type_box {
+		input {
+			border: 1px solid #d9d9d9;
+			border-radius: 6px;
+			overflow: hidden;
+			border-bottom-color: #d9d9d9;
+			height: 44px;
+			box-sizing: border-box;
+			padding: 0 14px;
+			&:focus {
+				border-bottom: 1px solid #d9d9d9;
+			}
+		}
+	}
+`;
 
 const Button = styled.button`
 	display: block;

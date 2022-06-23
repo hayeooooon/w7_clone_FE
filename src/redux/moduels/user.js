@@ -45,8 +45,8 @@ export const signInAxios = (email, password) => {
     apis.signIn({email, password}).then(
       res => {
         const token = res.data.token;
-        const expiry = res.data.expiresAt;
-        const validTo = Date.now() + expiry;
+        const limit = res.data.expiresAt;
+        const validTo = Date.now() + limit;
         sessionStorage.setItem('validTo', validTo)
         sessionStorage.setItem('token', token);
         window.location.href = '/';
@@ -63,13 +63,15 @@ export const loadUserInfoAxios = () => {
   return async (dispatch) => {
     apis.userInfo().then(
       res => {
-        console.log(res);
+        console.log(res)
         const user_info = res.data.principal.member;
         dispatch(loadUserInfo(user_info))
       }
     ).catch(
       err => {
         console.log(err);
+        sessionStorage.clear();
+        window.location.href = '/login'
       }
     )
   }

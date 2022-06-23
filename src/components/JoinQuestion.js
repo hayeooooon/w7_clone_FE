@@ -9,7 +9,7 @@ const JoinQuestion = () => {
   const dispatch = useDispatch();
   const id = useParams().id;
   const dataState = useSelector((state) => state.socialing.view);
-  const membersState = useSelector((state) => state.socialing.members)[0]?.members.owner;
+  const membersState = useSelector((state) => state.socialing.members);
   const [data, setData] = useState();
   const [btnDisabled, setBtnDisabled] = useState(true);
   const [answer, setAnswer] = useState();
@@ -25,6 +25,8 @@ const JoinQuestion = () => {
 		}
 	}, [data]);
 
+	console.log(membersState)
+
 	return (
 		<div className="content">
 			<div className="set_inner">
@@ -37,7 +39,7 @@ const JoinQuestion = () => {
 				</div>
         <div style={{display: 'flex', alignItems: 'flex-start', width: '100%', gap: '10px'}}>
           <div style={{width: '60px', textAlign: 'center'}}>
-            <span className="profile" style={{backgroundImage: `url(${membersState?.memberProfileUrl})`}}></span>
+            <span className="profile" style={{backgroundImage: `url(${membersState?.owner?.memberProfileUrl})`}}></span>
             <p style={{fontSize: '13px', color: '#333', margin: '5px 0 0'}}>{membersState?.name}</p>
           </div>
           {

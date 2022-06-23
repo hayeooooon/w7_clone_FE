@@ -2,25 +2,63 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 
-import TextInput from './TextInput';
+import TextInput from "./TextInput";
 
-const CreateStep2 = ({setStep, setData, page}) => {
-  const navigate = useNavigate();
+const CreateStep2 = ({ setStep, setData, page, editState }) => {
+	const navigate = useNavigate();
 	const param = useParams().id;
-	const [textValue, setTextValue] = useState("");
+	const [textValue, setTextValue] = useState(editState?.title);
 	const nextButton = useRef();
+	const inputRef = useRef();
 
-	useEffect(()=>{
+	useEffect(() => {
 		setStep(2);
-	},[]);
-
+		if(page === 'edit'){
+			setTextValue(editState?.title)
+		}
+	}, []);
+	useEffect(() => {
+		if(page === 'edit'){
+			if(sessionStorage.getItem('title')){
+				setTextValue(sessionStorage.getItem('title'))
+			}else{
+				setTextValue(editState?.title)
+			}
+		}
+	}, [editState?.title]);
 
 	return (
 		<>
 			<h3 className="section_title" style={{ padding: "20px 0 28px" }}>
 				소셜링 제목을 작성해볼까요?
 			</h3>
-			<TextInput placeholder="연희동으로 함께 카페투어가요 :)" maxLength="80" setTextValue={setTextValue}/>
+			<div className="input_area">
+				<InputArea>
+					<input
+						type="text"
+						placeholder="연희동으로 함께 카페투어가요 :)"
+						maxLength="80"
+						style={{ fontSize: "15px", color: "#222" }}
+						onInput={() => setTextValue(inputRef.current?.value)}
+						value={textValue}
+						ref={inputRef}
+					/>
+				</InputArea>
+				<div
+						style={{
+							fontSize: "11px",
+							color: "#B8B6B6",
+							marginTop: "3px",
+							textAlign: "right",
+							letterSpacing: "0.03em",
+						}}
+					>
+						<span style={{ color: "#222" }}>
+							{textValue?.length > 0 ? textValue.length : 0}
+						</span>
+						/ 80
+					</div>
+			</div>
 			<div
 				style={{
 					position: "fixed",
@@ -37,8 +75,10 @@ const CreateStep2 = ({setStep, setData, page}) => {
 					disabled={textValue?.trim().length >= 5 ? false : true}
 					ref={nextButton}
 					onClick={() => {
-						sessionStorage.setItem('title', textValue);
-						navigate(page !== 'edit' ? '/create/step_3' : `/edit/${param}/step_3`);
+						sessionStorage.setItem("title", textValue);
+						navigate(
+							page !== "edit" ? "/create/step_3" : `/edit/${param}/step_3`
+						);
 						setStep(3);
 					}}
 				>
@@ -48,6 +88,22 @@ const CreateStep2 = ({setStep, setData, page}) => {
 		</>
 	);
 };
+const InputArea = styled.div`
+	&.type_box {
+		input {
+			border: 1px solid #d9d9d9;
+			border-radius: 6px;
+			overflow: hidden;
+			border-bottom-color: #d9d9d9;
+			height: 44px;
+			box-sizing: border-box;
+			padding: 0 14px;
+			&:focus {
+				border-bottom: 1px solid #d9d9d9;
+			}
+		}
+	}
+`;
 
 const Button = styled.button`
 	display: block;

@@ -8,7 +8,7 @@ import { MdLocationOn } from "react-icons/md";
 import img_1 from "../images/img_slider_1.jpeg";
 import img_2 from "../images/img_slider_2.jpeg";
 
-const SocialingList = ({ socialings }) => {
+const SocialingList = ({ socialings, tab }) => {
 	const dispatch = useDispatch();
 	const membersState = useSelector((state)=>state.socialing.members)
 	const [data, setData] = useState();
@@ -24,7 +24,6 @@ const SocialingList = ({ socialings }) => {
 		data[i].startDate = `${new_month}.${new_day} (${day_kr[day]})`;
 	};
 	const setTimeFormat = (origin, i) => {
-		console.log('orign', origin, origin.split(":")[0])
 		const _hour = origin.split(":")[0]/1;
 		const new_hour =
 			_hour > 12 ? "오후 " + (_hour - 12) + "시" : "오전 " + _hour + "시";
@@ -39,9 +38,7 @@ const SocialingList = ({ socialings }) => {
 		}
 	}, [socialings]);
 	useEffect(()=>{
-		console.log(data,'?????')
 		if(data?.length > 0){
-			console.log('있음');
 			data.map((v,i)=>{
 				dispatch(loadMembersAxios(v.id, 'list'));
 				setTimeFormat(v.startTime, i);
@@ -49,6 +46,10 @@ const SocialingList = ({ socialings }) => {
 			})
 		}
 	}, [data])
+	useEffect(()=>{
+		setMembers();
+	}, [tab])
+	
 
 	useEffect(()=>{
 		if(membersState.length > 0 && (members?.length === undefined || data?.length > members?.length) ){
@@ -57,7 +58,7 @@ const SocialingList = ({ socialings }) => {
 	}, [membersState])
 
 	return (
-		<div style={{ padding: "22px 12px" }}>
+		<div style={{ padding: "22px 12px 40px" }}>
 			<h3 className="section_title" style={{ paddingBottom: "13px" }}>
 				소셜링 리스트
 			</h3>
@@ -93,10 +94,11 @@ const SocialingList = ({ socialings }) => {
 																{
 																	member.members.members.length > 0 && member.members.members.map((participant, participant_idx)=>{
 																		return (
-																			<li key={`member_${participant_idx}`}>
-																				{console.log(participant)}
-																				<span style={{ backgroundImage: `url(${participant.memberProfileUrl})` }}></span>
-																			</li>
+																			idx < 6 && (
+																				<li key={`member_${participant_idx}`}>
+																					<span style={{ backgroundImage: `url(${participant.memberProfileUrl})` }}></span>
+																				</li>
+																			)
 																		)
 																	})
 																}

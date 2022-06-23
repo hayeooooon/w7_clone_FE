@@ -9,7 +9,7 @@ import ic_detail_approval from "../images/ic_detail_approval.png";
 import ic_detail_approval_active from "../images/ic_detail_approval_active.png";
 import TextInput from "./TextInput";
 
-const CreateStep5 = ({ setStep, setData, page }) => {
+const CreateStep5 = ({ setStep, setData, page, editState }) => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const param = useParams().id;
@@ -29,6 +29,24 @@ const CreateStep5 = ({ setStep, setData, page }) => {
 			setBtnDisabled(false);
 		}
 	}, [textValue, recruitment]);
+
+	useEffect(() => {
+		if(page === 'edit'){
+			if(sessionStorage.getItem('recruitmentType')){
+				setRecruitment(sessionStorage.getItem('recruitmentType'))
+			}else{
+				setRecruitment(editState?.recruitmentType)
+			}
+			if(sessionStorage.getItem('question')){
+				setTextValue(sessionStorage.getItem('question'))
+			}else{
+				setTextValue(editState?.question)
+			}
+		}
+	}, [editState?.recruitmentType]);
+
+	console.log(editState)
+
 	return (
 		<>
 			<h3 className="section_title" style={{ padding: "20px 0 28px" }}>
@@ -102,11 +120,32 @@ const CreateStep5 = ({ setStep, setData, page }) => {
 					>
 						멤버들의 소셜링 신청을 위한 질문을 작성해주세요.
 					</p>
-					<TextInput
-						placeholder="예시) 어떤 관심사를 갖고 계신가요?"
-						maxLength="80"
-						setTextValue={setTextValue}
-					/>
+					<div className="input_area">
+						<InputArea>
+							<input
+								type="text"
+								placeholder="예시) 어떤 관심사를 갖고 계신가요?"
+								maxLength="80"
+								style={{ fontSize: "15px", color: "#222" }}
+								onInput={(e) => setTextValue(e.target.value)}
+								value={textValue}
+							/>
+						</InputArea>
+						<div
+							style={{
+								fontSize: "11px",
+								color: "#B8B6B6",
+								marginTop: "3px",
+								textAlign: "right",
+								letterSpacing: "0.03em",
+							}}
+						>
+							<span style={{ color: "#222" }}>
+								{textValue?.length > 0 ? textValue.length : 0}
+							</span>
+							/ 80
+						</div>
+					</div>
 				</div>
 			)}
 
@@ -126,9 +165,11 @@ const CreateStep5 = ({ setStep, setData, page }) => {
 					ref={nextButton}
 					disabled={btnDisabled}
 					onClick={() => {
-						sessionStorage.setItem('recruitmentType', recruitment);
-						sessionStorage.setItem('question', textValue);
-						navigate(page !== 'edit' ? '/create/step_6' : `/edit/${param}/step_6`);
+						sessionStorage.setItem("recruitmentType", recruitment);
+						sessionStorage.setItem("question", textValue);
+						navigate(
+							page !== "edit" ? "/create/step_6" : `/edit/${param}/step_6`
+						);
 						setStep(6);
 					}}
 				>
@@ -139,6 +180,22 @@ const CreateStep5 = ({ setStep, setData, page }) => {
 	);
 };
 
+const InputArea = styled.div`
+	&.type_box {
+		input {
+			border: 1px solid #d9d9d9;
+			border-radius: 6px;
+			overflow: hidden;
+			border-bottom-color: #d9d9d9;
+			height: 44px;
+			box-sizing: border-box;
+			padding: 0 14px;
+			&:focus {
+				border-bottom: 1px solid #d9d9d9;
+			}
+		}
+	}
+`;
 const RadioBox = styled.div`
 	font-size: 15px;
 	label {

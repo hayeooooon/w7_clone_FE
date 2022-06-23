@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 import {loadCategoryAxios} from '../redux/moduels/socialing';
 
-const CreateStep1 = ({setStep, setData, page}) => {
+const CreateStep1 = ({setStep, setData, page, editData}) => {
 	const dispatch = useDispatch();
   const navigate = useNavigate()
 	const param = useParams().id;
@@ -13,7 +13,6 @@ const CreateStep1 = ({setStep, setData, page}) => {
 	const [checkedCategory, setCheckedCategory] = useState(null);
 	const categoryStates = useSelector((state)=>state.socialing.category);
 	const [category, setCategory] = useState();
-
 	useEffect(()=>{
 		if(categoryStates.length > 0){
 			setCategory(categoryStates);

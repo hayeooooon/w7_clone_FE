@@ -9,7 +9,8 @@ import {
 } from "react-router-dom";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { loadMembersAxios } from "./redux/moduels/socialing";
+import { loadMembersAxios, loadDetailAxios } from "./redux/moduels/socialing";
+import { loadUserInfoAxios } from "./redux/moduels/user";
 
 import Main from "./components/Main";
 import Register from "./components/Register";
@@ -43,17 +44,33 @@ function App() {
 	const [address, setAddress] = useState("");
 	const [popupIsVisible, setPopupIsVisible] = useState(false);
 	const [pathname, setPathname] = useState(location.pathname);
-	const membersState = useSelector((state) => state.socialing.members)[0]
+	const membersState = useSelector((state) => state.socialing.members);
+	const editState = useSelector((state) => state.socialing.view);
 	const [data, setData] = useState({
 		id: "",
 		password: "",
 		nickname: "",
 	});
+	useEffect(()=>{
+		
+		const checkPermission = async()=>{
+			const token = await sessionStorage.getItem('token');
+			const validTo = await sessionStorage.getItem('validTo');
+			const now = Date.now();
+			if(!token){
+				navigate('/login');
+			}else{
+				dispatch(loadUserInfoAxios());
+			}
+		}
+		checkPermission();
+	},[])
 	useEffect(() => {
 		setPathname(location.pathname);
 		if(location.pathname.split('/')[1] === 'edit'){
 			const id = location.pathname.split('/')[2];
 			dispatch(loadMembersAxios(id));
+			dispatch(loadDetailAxios(id));
 		}
 	}, [location.pathname]);
 	
@@ -79,7 +96,7 @@ function App() {
 					</header>
 				) : (
 					<header style={{ position: "relative" }} className={pathname.split("/")[1] === 'view' ? 'longer' : ''}>
-						{((pathname.split("/")[1] !== "view" && pathname.split('/')[1] !== 'join' && pathname.split("/")[1] !== "completed")) && (
+						{((pathname.split("/")[1] !== "view" && pathname.split('/')[1] !== 'join' && pathname.split("/")[1] !== "completed" && pathname.split("/")[1] !== "manage")) && (
 							<div style={{ height: "4px", backgroundColor: "#F4F4F4" }}>
 								<span
 									style={{
@@ -98,7 +115,9 @@ function App() {
 						<ButtonGoBack
 							type="button"
 							onClick={() => {
-								navigate(-1);
+								if(pathname.split("/")[1] === "view") navigate('/');
+								else navigate(-1);
+								
 							}}
 						></ButtonGoBack>
 					</header>
@@ -114,7 +133,7 @@ function App() {
 					<Route path="/join/:id" element={<JoinSocialing />}></Route>
 					<Route path="/question/:id" element={<JoinQuestion />}></Route>
 					<Route path="/completed" element={<Completed />}></Route>
-					<Route path="/manage/:id" element={<Manage />}></Route>
+					<Route path="/manage/:status/:id" element={<Manage />}></Route>
 
 					{/* start: 회원가입하기 components */}
 					<Route path="/register" element={<Register />}>
@@ -183,15 +202,15 @@ function App() {
 					<Route path="/edit/:id" element={<CreateSocialing page="edit"/>}>
 						<Route
 							path="step_1"
-							element={<CreateStep1 setStep={setStep} setData={setData} page="edit" members={membersState?.members} />}
+							element={<CreateStep1 setStep={setStep} setData={setData} page="edit" members={membersState?.members} editState={editState}/>}
 						></Route>
 						<Route
 							path="step_2"
-							element={<CreateStep2 setStep={setStep} setData={setData} page="edit" members={membersState?.members}/>}
+							element={<CreateStep2 setStep={setStep} setData={setData} page="edit" members={membersState?.members} editState={editState}/>}
 						></Route>
 						<Route
 							path="step_3"
-							element={<CreateStep3 setStep={setStep} setData={setData} page="edit" members={membersState?.members}/>}
+							element={<CreateStep3 setStep={setStep} setData={setData} page="edit" members={membersState?.members} editState={editState}/>}
 						></Route>
 						<Route
 							path="step_4"
@@ -204,31 +223,31 @@ function App() {
 									popupIsVisible={popupIsVisible}
 									setPopupIsVisible={setPopupIsVisible}
 									page="edit" members={membersState?.members}
+									editState={editState}
 								/>
 							}
 						></Route>
 						<Route
 							path="step_5"
-							element={<CreateStep5 setStep={setStep} setData={setData} page="edit" members={membersState?.members}/>}
+							element={<CreateStep5 setStep={setStep} setData={setData} page="edit" members={membersState?.members} editState={editState}/>}
 						></Route>
 						<Route
 							path="step_6"
-							element={<CreateStep6 setStep={setStep} setData={setData} page="edit" members={membersState?.members}/>}
+							element={<CreateStep6 setStep={setStep} setData={setData} page="edit" members={membersState?.members} editState={editState}/>}
 						></Route>
 						<Route
 							path="step_7"
-							element={<CreateStep7 setStep={setStep} setData={setData} page="edit" members={membersState?.members}/>}
+							element={<CreateStep7 setStep={setStep} setData={setData} page="edit" members={membersState?.members} editState={editState}/>}
 						></Route>
 						<Route
 							path="step_8"
-							element={<CreateStep8 setStep={setStep} setData={setData} page="edit" members={membersState?.members}/>}
+							element={<CreateStep8 setStep={setStep} setData={setData} page="edit" members={membersState?.members} editState={editState}/>}
 						></Route>
 					</Route>
 					{/* end: 소셜링 수정하기 components */}
 				</Routes>
 			</div>
-
-			{popupIsVisible && location.pathname === "/create/step_4" && (
+			{popupIsVisible && (location.pathname === "/create/step_4" || pathname.split('/')[1] === 'edit') && (
 				<div
 					style={{
 						position: "fixed",
@@ -274,4 +293,5 @@ const ButtonGoBack = styled.div`
 		content: "";
 	}
 `;
+
 export default App;

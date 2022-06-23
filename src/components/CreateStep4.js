@@ -13,7 +13,8 @@ const CreateStep4 = ({
 	setPopupIsVisible,
 	setData,
 	page,
-	members
+	members,
+	editState
 }) => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
@@ -35,7 +36,22 @@ const CreateStep4 = ({
 			setActivateButton(true);
 		}
 	}, [meetingType, address]);
-	console.log(members?.members.length,'members')
+
+	useEffect(() => {
+		if(page === 'edit'){
+			if(sessionStorage.getItem('meetingType')){
+				setMeetingType(sessionStorage.getItem('title') === 'offline' ? 0 : 1)
+			}else{
+				setMeetingType(editState?.meetingType === 'offline' ? 0 : 1)
+			}
+			if(sessionStorage.getItem('address')){
+				setAddress(sessionStorage.getItem('address'))
+			}else{
+				setAddress(editState?.address)
+			}
+		}
+	}, [editState?.meetingType]);
+	
 
 	return (
 		<>
@@ -94,6 +110,9 @@ const CreateStep4 = ({
 							borderBottom: "1px solid #d9d9d9",
 							paddingLeft: "28px",
 							color: address !== "" ? "#222" : "#989696",
+							whiteSpace: 'nowrap',
+							textOverflow: 'ellipsis',
+							overflow: 'hidden'
 						}}
 					>
 						{address ? address : "장소를 입력해주세요."}

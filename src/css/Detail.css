@@ -129,6 +129,7 @@
   box-sizing: border-box;
   margin-bottom: 50px;
   text-align: left;
+  word-break:break-all;
 }
 
 .Detail_member {
@@ -162,15 +163,20 @@
   z-index: 4;
   top: -245px;
 }
-.Detail_member_profile_Desc > span {
+.Detail_member_profile_Desc > span{
   margin: 5px 0px 0px 12px;
   font-weight: 700;
 }
-.Detail_member_profile_Desc > p {
+.Detail_member_profile_Desc > p,
+.profile_desc > p {
   margin: 0 0px 0px 12px;
   color: #B8B6B6;
   font-size: 14px;
   font-weight: 500;
+}
+.profile_desc > span{
+  font-weight: 700;
+  margin-right: 10px;
 }
 
 /* INFO  */
