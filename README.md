@@ -2,7 +2,7 @@
 
 누구나 열고 참여할 수 있는 원데이 모임 문토를 클론코딩 하였습니다.
 
-<a href="http://w5project.s3-website.ap-northeast-2.amazonaws.com/" target="_blank">프로젝트 페이지 바로가기</a>
+<a href="http://w5magazine.s3-website.ap-northeast-2.amazonaws.com/" target="_blank">프로젝트 페이지 바로가기</a>
 
 <br>
 <hr>
