@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 import {loadCategoryAxios} from '../redux/moduels/socialing';
 
-const CreateStep1 = ({setStep, setData, page, editData}) => {
+const CreateStep1 = ({setStep, setData, page, editState}) => {
 	const dispatch = useDispatch();
   const navigate = useNavigate()
 	const param = useParams().id;
@@ -31,21 +31,33 @@ const CreateStep1 = ({setStep, setData, page, editData}) => {
 	useEffect(()=>{
 		setStep(1);
 		dispatch(loadCategoryAxios());
-		sessionStorage.removeItem('title');
-		sessionStorage.removeItem('content');
-		sessionStorage.removeItem('imageFile');
-		sessionStorage.removeItem('startDate');
-		sessionStorage.removeItem('startTime');
-		sessionStorage.removeItem('meetingType');
-		sessionStorage.removeItem('address');
-		sessionStorage.removeItem('recruitmentType');
-		sessionStorage.removeItem('question');
-		sessionStorage.removeItem('limitHeadcount');
-		sessionStorage.removeItem('entryFee');
-		sessionStorage.removeItem('entryFeeInfo');
-		sessionStorage.removeItem('category');
+		if(page !== 'edit'){
+			sessionStorage.removeItem('title');
+			sessionStorage.removeItem('content');
+			sessionStorage.removeItem('imageFile');
+			sessionStorage.removeItem('startDate');
+			sessionStorage.removeItem('startTime');
+			sessionStorage.removeItem('meetingType');
+			sessionStorage.removeItem('address');
+			sessionStorage.removeItem('recruitmentType');
+			sessionStorage.removeItem('question');
+			sessionStorage.removeItem('limitHeadcount');
+			sessionStorage.removeItem('entryFee');
+			sessionStorage.removeItem('entryFeeInfo');
+			sessionStorage.removeItem('category');
+		}
 	},[]);
-  
+
+	useEffect(()=>{
+		if(page === 'edit'){
+			if(sessionStorage.getItem('category')){
+				setCheckedCategory(sessionStorage.getItem('category'))
+			}else{
+				setCheckedCategory(editState.categoryId)
+			}
+		}
+	},[editState?.categoryId])
+
 	return (
 		<>
 			<h3 className="section_title" style={{ padding: "20px 0 28px" }}>

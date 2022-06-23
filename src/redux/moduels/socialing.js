@@ -160,7 +160,23 @@ export const editSocialingAxios = (cid, sid, formdata) => {
 			.updateSocialing(cid, sid, formdata, config)
 			.then((res) => {
 				console.log(res, "수정완료");
-				window.location.href = `/view/${sid}`
+				const removeStorage = async () => {
+					await sessionStorage.removeItem("title");
+					await sessionStorage.removeItem("content");
+					await sessionStorage.removeItem("imageFile");
+					await sessionStorage.removeItem("startDate");
+					await sessionStorage.removeItem("startTime");
+					await sessionStorage.removeItem("meetingType");
+					await sessionStorage.removeItem("address");
+					await sessionStorage.removeItem("recruitmentType");
+					await sessionStorage.removeItem("question");
+					await sessionStorage.removeItem("limitHeadcount");
+					await sessionStorage.removeItem("entryFee");
+					await sessionStorage.removeItem("entryFeeInfo");
+					await sessionStorage.removeItem("category");
+					window.location.href = `/view/${sid}`
+				};
+				removeStorage();
 			})
 			.catch((err) => {
 				if (err.response) {

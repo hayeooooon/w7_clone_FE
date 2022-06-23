@@ -46,6 +46,8 @@ function App() {
 	const [pathname, setPathname] = useState(location.pathname);
 	const membersState = useSelector((state) => state.socialing.members);
 	const editState = useSelector((state) => state.socialing.view);
+	const [editId, setEditId] = useState();
+
 	const [data, setData] = useState({
 		id: "",
 		password: "",
@@ -71,8 +73,15 @@ function App() {
 			const id = location.pathname.split('/')[2];
 			dispatch(loadMembersAxios(id));
 			dispatch(loadDetailAxios(id));
+			setEditId(id);
 		}
 	}, [location.pathname]);
+	useEffect(()=>{
+		if(location.pathname.split('/')[1] === 'edit'){
+			const id = location.pathname.split('/')[2];
+			dispatch(loadDetailAxios(id));
+		}
+	}, [editId])
 	
 	return (
 		<div
