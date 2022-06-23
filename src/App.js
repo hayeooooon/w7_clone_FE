@@ -105,7 +105,7 @@ function App() {
 					</header>
 				) : (
 					<header style={{ position: "relative" }} className={pathname.split("/")[1] === 'view' ? 'longer' : ''}>
-						{((pathname.split("/")[1] !== "view" && pathname.split('/')[1] !== 'join' && pathname.split("/")[1] !== "completed" && pathname.split("/")[1] !== "manage")) && (
+						{((pathname.split("/")[1] !== "view" && pathname.split('/')[1] !== 'join' && pathname.split("/")[1] !== "completed" && pathname.split("/")[1] !== "manage" && pathname.split("/")[1] !== "question")) && (
 							<div style={{ height: "4px", backgroundColor: "#F4F4F4" }}>
 								<span
 									style={{

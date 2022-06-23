@@ -51,10 +51,8 @@ const CreateStep8 = ({ setStep, setData, page, editState }) => {
 			formdata.append("categoryId", sessionStorage.getItem("category"));
 		const category = sessionStorage.getItem("category");
 		if (create) {
-			console.log("create", formdata);
 			dispatch(createSocialingAxios(category, formdata));
 		} else {
-			console.log("edit", formdata, typeof formdata);
 			dispatch(editSocialingAxios(category, param, formdata));
 		}
 	};
@@ -84,8 +82,6 @@ const CreateStep8 = ({ setStep, setData, page, editState }) => {
 			}
 		}
 	}, [editState?.content]);
-
-	console.log(editState?.content);
 
 	return (
 		<>

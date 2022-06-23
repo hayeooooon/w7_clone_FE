@@ -17,7 +17,6 @@ const Manage = () => {
 	const [btnDisabled, setBtnDisabled] = useState(true);
 	const [question, setQuestion] = useState();
 	const [alertClass, setAlertClass] = useState(false);
-	console.log(pendingMembersState);
 	useEffect(() => {
 		dispatch(loadPendingMembersAxios(id));
 		setQuestion(sessionStorage.getItem("question"));
