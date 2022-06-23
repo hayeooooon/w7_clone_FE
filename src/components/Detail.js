@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "../css/Detail.css";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { loadDetailAxios, loadMembersAxios } from "../redux/moduels/socialing";
+import { loadDetailAxios, loadMembersAxios, loadPendingMembersAxios, clearSocialings, cancelParticipateAxios } from "../redux/moduels/socialing";
 import { loadUserInfoAxios } from "../redux/moduels/user";
 
 import { IoMdPeople } from "react-icons/io";
@@ -12,7 +12,6 @@ import { AiFillDollarCircle, AiFillInfoCircle } from "react-icons/ai";
 import { MdAccessTimeFilled, MdAccountBox } from "react-icons/md";
 import { BsCalendar3 } from "react-icons/bs";
 import { ImLocation } from "react-icons/im";
-import { set } from "date-fns";
 
 const Detail = () => {
 	const dispatch = useDispatch();
@@ -20,6 +19,7 @@ const Detail = () => {
 	const id = useParams().id;
 	const dataState = useSelector((state) => state.socialing.view);
 	const membersState = useSelector((state) => state.socialing.members)
+	const pendingMembersState = useSelector((state) => state.socialing.pending)
 	const userState = useSelector((state)=> state.user.user)[0];
 	const [data, setData] = useState();
 	const [members, setMembers] = useState();
@@ -54,7 +54,9 @@ const Detail = () => {
 		dispatch(loadDetailAxios(id));
 		const token = sessionStorage.getItem('token');
 		if(token) dispatch(loadUserInfoAxios());
-
+		return () => {
+			dispatch(clearSocialings())
+		}
 	}, []);
 	useEffect(() => {
 		setData(dataState);
@@ -62,6 +64,7 @@ const Detail = () => {
 	useEffect(() => {
 		if (data?.id) {
 			dispatch(loadMembersAxios(id));
+			dispatch(loadPendingMembersAxios(id));
 			setDateFormat();
 			setTimeFormat();
 			if(data.entryFee > 0) setFeeFormat();
@@ -69,11 +72,8 @@ const Detail = () => {
 	}, [data]);
 	useEffect(() => {
 		setMembers(membersState);
-		console.log(membersState, '444@@@@@@@@@@@@@@')
 	}, [membersState]);
-
-	console.log(data, members, userState);
-
+	
 	return (
 		<div className="detail_main">
 			<div className="Detail_img_box">
@@ -246,25 +246,33 @@ const Detail = () => {
 					{
 						data?.participate === false
 						?
-						(<Button type="button" onClick={()=>{navigate(`/join/${id}`)}}>참여하기</Button>)
+						(<Button type="button" disabled={data?.limitHeadcount === members?.members?.length+1} onClick={()=>{navigate(`/join/${id}`)}}>{data?.limitHeadcount === members?.members?.length+1 ? '모집 마감' : '참여하기'}</Button>)
 						:
 						members?.owner?.memberId === userState?.id
 						?
 						(
 							<>
 								{
-									members?.members?.length > 0 && (
-										<button type="button" className="btn_like" onClick={()=>navigate(`/manage/${id}`)}>
+									pendingMembersState?.length > 0 && (
+										<button type="button" className="btn_like" onClick={ async()=>{
+											await sessionStorage.setItem('question', data?.question);
+											navigate(`/manage/list/${id}`);
+										}}>
 											<IoSettingsSharp className="mr-4" size={40} color="#e1483c" />
 										</button>
 									)
 								}
-								<Button className="type_2" type="button" onClick={()=>{navigate(`/edit/${id}/step_1`)}}>수정하기</Button>
+								<Button className="type_2" type="button" onClick={()=>{
+									// sessionStorage.setItem('category')
+									navigate(`/edit/${id}/step_1`)
+								}}>수정하기</Button>
 							</>
 						)
 						:
 						(
-							<Button className="type_2" type="button" onClick={()=>{navigate(`/join/${id}`)}}>참여 취소하기</Button>
+							<Button className="type_2" type="button" onClick={()=>{
+								dispatch(cancelParticipateAxios(id))
+							}}>참여 취소하기</Button>
 						)
 					}
 					

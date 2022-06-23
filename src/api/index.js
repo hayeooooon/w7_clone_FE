@@ -12,9 +12,13 @@ export const apis = {
   loadSocialings: (tab) => api.get(`/api/categories/${tab}/socials?page=0&size=5`),
   createSocialing: (category, formdata, config) => api.post(`/api/categories/${category}/socials`, formdata, config),
   loadMembers: (id) => api.get(`/api/socials/${id}/members?approved=1`),
+  loadPendingMembers: (id) => api.get(`/api/socials/${id}/members?approved=0`),
   loadDetail: (id) => api.get(`/api/socials/${id}`),
   updateSocialing: (cid, sid, formdata, config) => api.patch(`/api/categories/${cid}/socials/${sid}`, formdata, config),
   updateAnswer: (id, answer) => api.post(`/api/socials/${id}/participation`, answer),
+  approveMember: (sid, mid) => api.post(`/api/socials/${sid}/members/${mid}/approved`),
+  refuseMember: (sid, mid) => api.delete(`/api/socials/${sid}/members/${mid}/refuse`),
+  cancelParicipate: (id) => api.delete(`/api/socials/${id}/participation`),
 
   // user
   signIn: (info) => api.post('/api/login', info),

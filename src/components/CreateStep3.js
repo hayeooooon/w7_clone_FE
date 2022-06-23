@@ -10,7 +10,7 @@ import format from "date-fns/format";
 import addMonths from "date-fns/addMonths";
 import { useDispatch } from "react-redux";
 
-const CreateStep3 = ({ setStep, setData, page, members }) => {
+const CreateStep3 = ({ setStep, setData, page, members, editState }) => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 	const param = useParams().id;
@@ -71,6 +71,7 @@ const CreateStep3 = ({ setStep, setData, page, members }) => {
 		const _day = startDate.getDate() < 10 ? '0' + startDate.getDate() : startDate.getDate();
 		setDateData(`${_year}-${_month}-${_day}`);
 	},[startDate])
+
 		
 	return (
 		<>
@@ -149,7 +150,7 @@ const CreateStep3 = ({ setStep, setData, page, members }) => {
 					disabled=""
 					onClick={() => {
 						if(page === 'edit'){
-							if(members?.members.length > 0){
+							if(members?.length > 0){
 								sessionStorage.setItem('startDate', dateData);
 								sessionStorage.setItem('startTime', timeData);
 								sessionStorage.setItem('meetingType', '')
