@@ -29,7 +29,7 @@ const CreateStep7 = ({ setStep, setData, page, editState }) => {
 	
 	useEffect(() => {
 		setBtnDisabled(true);
-		if (entryFee === 0 && page !== 'edit') {
+		if (entryFee === 0) {
 			setFeeData(0);
 			setFeeInfo('');
 			setFeeValue('');
