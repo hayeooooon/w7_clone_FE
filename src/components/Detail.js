@@ -34,7 +34,7 @@ const Detail = () => {
 		const new_day = origin.split("-")[2];
 		const day = new Date(origin).getDay();
 		const day_kr = ["일", "월", "화", "수", "목", "금", "토", "일"];
-		setDate(`${new_month}.${new_day} (${day_kr[day]})`);
+		setDate(`${parseInt(new_month)+1}.${new_day} (${day_kr[day]})`);
 	};
 	const setTimeFormat = () => {
 		const origin = data.startTime;
@@ -206,14 +206,10 @@ const Detail = () => {
 							<BsCalendar3 size={19} />
 							<p>{date} {time}</p>
 						</div>
-						{
-							data?.meetingType === 'offline' && (
-								<div className="info_desc">
-									<ImLocation size={19} />
-									<p>{data?.address}</p>
-								</div>
-							)
-						}
+						<div className="info_desc">
+							<ImLocation size={19} />
+							<p>{data?.meetingType === 'offline' ? data?.address : '온라인 모임'}</p>
+						</div>
 					</div>
 				</div>
 				{

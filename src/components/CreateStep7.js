@@ -44,11 +44,10 @@ const CreateStep7 = ({ setStep, setData, page, editState }) => {
 			setFeeInfo(feeInfo);
 			setBtnDisabled(false);
 		}
+		if(feeValue && feeInfo && page === 'edit'){
+			setBtnDisabled(false);
+		}
 	}, [entryFee, feeValue, feeInfo]);
-
-	useEffect(() => {
-		setStep(8);
-	}, []);
 
 	useEffect(() => {
 		if(page === 'edit'){
@@ -64,6 +63,7 @@ const CreateStep7 = ({ setStep, setData, page, editState }) => {
 		}
 	}, [editState?.entryFee]);
 
+	console.log(feeValue, feeInfo)
 	return (
 		<>
 			<h3 className="section_title" style={{ padding: "20px 0 0" }}>
